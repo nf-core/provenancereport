@@ -3,15 +3,14 @@
         "content": [
             {
                 "QUARTONOTEBOOK": {
-                    "papermill": "2.6.0",
-                    "quarto": "1.7.31"
+                    "papermill": "2.7.0",
+                    "quarto": "1.9.38"
                 },
                 "Workflow": {
                     "nf-core/provenancereport": "v1.0.0dev"
                 }
             },
             [
-                "nf-prov",
                 "pipeline_info",
                 "pipeline_info/nf_core_provenancereport_software_versions.yml",
                 "quartonotebook",
@@ -25,10 +24,10 @@
                 "external_rds_report.qmd:md5,33c6e034d026f8d8d619711bec521665"
             ]
         ],
-        "timestamp": "2026-07-03T14:07:11.68826943",
+        "timestamp": "2026-08-12T22:51:47.248657825",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.1"
         }
     }
 }
