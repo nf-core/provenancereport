@@ -41,6 +41,11 @@ workflow NFCORE_PROVENANCEREPORT {
         samplesheet,
         params.outdir,
     )
+
+    emit:
+    reports   = PROVENANCEREPORT.out.reports
+    notebook  = PROVENANCEREPORT.out.notebook
+    artifacts = PROVENANCEREPORT.out.artifacts
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -99,7 +104,7 @@ output {
         mode params.publish_dir_mode
     }
     artifacts {
-        path 'quartonotebook/artifacts'
+        path 'quartonotebook'
         mode params.publish_dir_mode
     }
 }

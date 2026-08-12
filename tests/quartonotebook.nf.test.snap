@@ -11,7 +11,6 @@
                 }
             },
             [
-                "nf-prov",
                 "pipeline_info",
                 "pipeline_info/nf_core_provenancereport_software_versions.yml",
                 "quartonotebook",
@@ -25,10 +24,10 @@
                 "quarto_r.qmd:md5,b3fa8b456efae62495c0b278a4f7694c"
             ]
         ],
-        "timestamp": "2026-06-29T11:52:18.819317077",
+        "timestamp": "2026-08-12T22:51:07.888290286",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.1"
         }
     }
 }

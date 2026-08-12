@@ -93,10 +93,10 @@ workflow PROVENANCEREPORT {
             newLine: true
         )
     emit:
-    versions       = ch_versions                  // channel: [ path(versions.yml) ]
-    reports        = QUARTONOTEBOOK.out.html      // channel: [ val(meta), path(html) ]
-    notebook       = QUARTONOTEBOOK.out.notebook  // channel: [ val(meta), path(qmd) ]
-    artifacts      = QUARTONOTEBOOK.out.artifacts // channel: [ val(meta), path(artifacts/*) ]
+    versions       = ch_versions                                                      // channel: [ path(versions.yml) ]
+    reports        = QUARTONOTEBOOK.out.html.map { _meta, html -> html }              // channel: [ val(meta), path(html) ]
+    notebook       = QUARTONOTEBOOK.out.notebook.map { _meta, notebook -> notebook }  // channel: [ val(meta), path(qmd) ]
+    artifacts      = QUARTONOTEBOOK.out.artifacts                                     // channel: [ val(meta), path(artifacts/*) ]
 }
 
 /*
