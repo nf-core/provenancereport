@@ -1,5 +1,7 @@
 reports:
   multiqc_report.html:
     display: "Pipeline execution and provenance report"
+  "quartonotebook/*.html":
+    display: "Quarto notebook report"
   samplesheet.csv:
     display: "Validated input samplesheet"
