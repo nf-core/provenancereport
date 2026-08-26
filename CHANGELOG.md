@@ -16,6 +16,7 @@ Initial release of nf-core/provenancereport, created with the [nf-core](https://
 - [#16](https://github.com/nf-core/provenancereport/pull/16) - Add a test case with a user-provided quarto input with an external RDS file and user-provided custom container.
 - [#15](https://github.com/nf-core/provenancereport/pull/15) - First draft implementation of provenancereport pipeline.
 - [#19](https://github.com/nf-core/provenancereport/pull/19) - Integrate nf-prov and metadata capture.
+- [#29](https://github.com/nf-core/provenancereport/pull/29) - List QUARTONOTEBOOK html report in seqera.
 
 ### `Fixed`
 
