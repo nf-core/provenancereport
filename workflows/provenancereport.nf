@@ -12,7 +12,6 @@ include { MULTIQC                         } from '../modules/nf-core/multiqc/mai
 include { paramsSummaryMultiqc            } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML          } from '../subworkflows/nf-core/utils_nfcore_pipeline'
 include { methodsDescriptionText          } from '../subworkflows/local/utils_nfcore_provenancereport_pipeline'
-include { runtimeEnvironmentMultiqc       } from '../subworkflows/local/utils_nfcore_provenancereport_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,7 +22,8 @@ include { runtimeEnvironmentMultiqc       } from '../subworkflows/local/utils_nf
 workflow PROVENANCEREPORT {
 
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
+    ch_samplesheet      // channel: samplesheet read in from --input
+    ch_report_container // channel: container image used to render the report
     outdir
 
     main:
@@ -71,14 +71,16 @@ workflow PROVENANCEREPORT {
         ch_quarto_input.extensions,
     )
 
-    REPORTENVIRONMENT ()
+    REPORTENVIRONMENT (
+        ch_report_container
+    )
 
     //
     // Calculate checksums for every samplesheet input and the rendered report
     //
     def ch_checksum_files = ch_samplesheet
-        .map { meta, input_file -> input_file }
-        .mix(QUARTONOTEBOOK.out.html.map { meta, report_file -> report_file })
+        .map { _meta, input_file -> input_file }
+        .mix(QUARTONOTEBOOK.out.html.map { _meta, report_file -> report_file })
         .collect()
         .map { files -> [[ id: 'provenancereport' ], files] }
 
@@ -157,19 +159,10 @@ workflow PROVENANCEREPORT {
         ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true)
     )
 
-    def ch_runtime_environment = REPORTENVIRONMENT.out.runtime_environment
-        .map { process_name, container, r_session_info, python_version ->
-            runtimeEnvironmentMultiqc(
-                process_name,
-                container,
-                workflow.containerEngine,
-                workflow.profile,
-                r_session_info,
-                python_version,
-            )
-        }
-        .collectFile(name: 'runtime_environment_mqc.yaml', sort: true)
-    ch_multiqc_files = ch_multiqc_files.mix(ch_runtime_environment)
+    ch_multiqc_files = ch_multiqc_files.mix(
+        REPORTENVIRONMENT.out.multiqc_table,
+        REPORTENVIRONMENT.out.multiqc_r_session
+    )
 
     def ch_pipeline_outputs_rows = QUARTONOTEBOOK.out.html
         .map { _meta, report ->

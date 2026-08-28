@@ -10,22 +10,19 @@ nextflow_process {
 
     test("collect report runtime environment") {
 
-        then {
-            def runtime_environment = process.out.runtime_environment[0]
-            def normalized_environment = [
-                process: runtime_environment[0],
-                container: runtime_environment[1],
-                fields: runtime_environment.size(),
-            ]
-            def r_session_info = runtime_environment[2].trim()
-            def python_version = runtime_environment[3].trim()
+        when {
+            process {
+                """
+                input[0] = 'community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665'
+                """
+            }
+        }
 
-            assertAll(
-                { assert process.success },
-                { assert snapshot(normalized_environment).match() },
-                { assert r_session_info == 'Not available' || r_session_info.startsWith('R version') },
-                { assert python_version == 'Not available' || python_version.startsWith('Python ') },
-            )
+        then {
+            assertAll {
+                { assert process.success }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["multiqc_table", "multiqc_r_session"])).match() }
+            }
         }
     }
 }

@@ -13,21 +13,21 @@ tools:
       documentation: https://nf-co.re/provenancereport
       licence: ["MIT"]
       identifier: ""
-input: []
+input:
+  - report_container:
+      type: string
+      description: Container image used to render the Quarto report
 output:
-  runtime_environment:
-    - - process:
-          type: string
-          description: Fully qualified Nextflow process name
-      - container:
-          type: string
-          description: Container configured for the report process
-      - r_session_info:
-          type: eval
-          description: R session information, or Not available when R is absent
-      - python_version:
-          type: eval
-          description: Python version, or Not available when Python is absent
+  multiqc_table:
+    - - runtime_environment_mqc.tsv:
+          type: file
+          description: MultiQC custom-data table describing the report runtime environment
+          pattern: "runtime_environment_mqc.tsv"
+  multiqc_r_session:
+    - - r_session_info_mqc.yaml:
+          type: file
+          description: MultiQC custom-content HTML section containing full R session information
+          pattern: "r_session_info_mqc.yaml"
 authors:
   - "@antoniasaracco"
 maintainers:

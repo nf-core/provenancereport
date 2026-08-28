@@ -2,15 +2,18 @@
     "collect report runtime environment": {
         "content": [
             {
-                "process": "REPORTENVIRONMENT",
-                "container": "community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665",
-                "fields": 4
+                "multiqc_r_session": [
+                    "r_session_info_mqc.yaml"
+                ],
+                "multiqc_table": [
+                    "runtime_environment_mqc.tsv"
+                ]
             }
         ],
-        "timestamp": "2026-08-21T17:45:43.46063591",
+        "timestamp": "2026-08-26T19:51:31.376957352",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.0"
         }
     }
 }

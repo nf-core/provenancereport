@@ -9,12 +9,14 @@ report_section_order:
     order: 99999
   pipeline_outputs:
     order: 99998
+  runtime_environment:
+    order: 99997
+  "nf-core-provenancereport-r-session-info":
+    order: 99996
   "nf-core-provenancereport-methods-description":
     order: -1000
   software_versions:
     order: -1001
-  "nf-core-provenancereport-runtime-environment":
-    order: -1002
   "nf-core-provenancereport-summary":
     order: -1003
 
@@ -26,6 +28,8 @@ custom_content:
     - input_samplesheet
     - file_checksums
     - pipeline_outputs
+    - runtime_environment
+    - "nf-core-provenancereport-r-session-info"
 
 custom_data:
   input_samplesheet:
@@ -59,6 +63,16 @@ custom_data:
         title: File
       output_path:
         title: Output path
+  runtime_environment:
+    section_name: "Report Runtime Environment"
+    description: "Runtime environment used to render the Quarto report."
+    plot_type: "table"
+    file_format: "tsv"
+    headers:
+      field:
+        title: Field
+      value:
+        title: Value
 
 sp:
   input_samplesheet:
@@ -67,3 +81,5 @@ sp:
     fn: "file_checksums_mqc.tsv"
   pipeline_outputs:
     fn: "pipeline_outputs_mqc.tsv"
+  runtime_environment:
+    fn: "runtime_environment_mqc.tsv"
