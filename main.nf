@@ -30,8 +30,7 @@ include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_prov
 workflow NFCORE_PROVENANCEREPORT {
 
     take:
-    samplesheet       // channel: samplesheet read in from --input
-    report_container  // channel: container image used to render the report
+    samplesheet // channel: samplesheet read in from --input
 
     main:
 
@@ -40,7 +39,6 @@ workflow NFCORE_PROVENANCEREPORT {
     //
     PROVENANCEREPORT (
         samplesheet,
-        report_container,
         params.outdir,
     )
 
@@ -66,7 +64,6 @@ workflow {
         args,
         params.outdir,
         params.input,
-        params.report_container,
         params.help,
         params.help_full,
         params.show_hidden
@@ -76,8 +73,7 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_PROVENANCEREPORT (
-        PIPELINE_INITIALISATION.out.samplesheet,
-        PIPELINE_INITIALISATION.out.report_container
+        PIPELINE_INITIALISATION.out.samplesheet
     )
     //
     // SUBWORKFLOW: Run completion tasks

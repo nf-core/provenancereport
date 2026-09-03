@@ -12,7 +12,7 @@
             },
             [
                 "README.md:md5,675e5d6c3dbc9598e26c801377bae67e",
-                "main.nf:md5,353a9c493c4b58d3a790da185f839f96",
+                "main.nf:md5,f8cc1568cd9c0105fb6cb26f6be01afd",
                 "md5sum",
                 "md5sum/provenancereport.md5",
                 "multiqc",
@@ -29,8 +29,8 @@
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
                 "multiqc/multiqc_data/multiqc_sources.txt",
                 "multiqc/multiqc_report.html",
-                "nextflow.config:md5,51799b5ab6b9e7f70b51eddae111a8ae",
-                "nextflow_schema.json:md5,e7342e15cef1e11bfb50150cf9953a1d",
+                "nextflow.config:md5,ef0f042c923380adf90e0107a77fe741",
+                "nextflow_schema.json:md5,965a47a7ef29471866ea060b729f0015",
                 "pipeline_info",
                 "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
                 "quartonotebook",
@@ -42,8 +42,8 @@
             ],
             [
                 "README.md:md5,675e5d6c3dbc9598e26c801377bae67e",
-                "main.nf:md5,353a9c493c4b58d3a790da185f839f96",
-                "nextflow_schema.json:md5,e7342e15cef1e11bfb50150cf9953a1d",
+                "main.nf:md5,f8cc1568cd9c0105fb6cb26f6be01afd",
+                "nextflow_schema.json:md5,965a47a7ef29471866ea060b729f0015",
                 "artifact.txt:md5,b10a8db164e0754105b7a99be72e3fe5",
                 "quarto_r.qmd:md5,a6a7392a32a4a2f5637fd8245b936031",
                 "samplesheet_quartonotebook.csv:md5,33cd9804d52f8ff96e2244df29e5cd2a"

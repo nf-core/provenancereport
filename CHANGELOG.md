@@ -9,7 +9,8 @@ Initial release of nf-core/provenancereport, created with the [nf-core](https://
 
 ### `Added`
 
-- [#30](https://github.com/nf-core/provenancereport/issues/26) - Refactor report runtime environment collection into the local `REPORTENVIRONMENT` module.
+- [#32](https://github.com/nf-core/provenancereport/pull/32) - Refactor report runtime environment collection into the local `REPORTENVIRONMENT` module.
+- Report and inherit the resolved `QUARTONOTEBOOK` runtime environment in `REPORTENVIRONMENT`, including container and Conda runtimes.
 - [#26](https://github.com/nf-core/provenancereport/issues/26) - Attach documentation to pipeline run.
 - [#8](https://github.com/nf-core/provenancereport/issues/8) - Add a MultiQC execution report with run configuration and report-runtime environment metadata.
 - [#23](https://github.com/nf-core/provenancereport/pull/23) - Add MD5 checksums for all samplesheet inputs and the rendered Quarto report to the MultiQC execution report.

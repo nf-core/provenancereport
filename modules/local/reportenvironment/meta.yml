@@ -14,9 +14,9 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - report_container:
-      type: string
-      description: Container image used to render the Quarto report
+  - runtime_environment:
+      type: tuple
+      description: Runtime metadata emitted by QUARTONOTEBOOK, including source process, runtime backend, and runtime reference
 output:
   multiqc_table:
     - - runtime_environment_mqc.tsv:

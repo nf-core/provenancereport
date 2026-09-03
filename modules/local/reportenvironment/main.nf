@@ -1,9 +1,25 @@
 process REPORTENVIRONMENT {
     tag 'report runtime environment'
     label 'process_single'
+    container {
+        try {
+            runtime_backend != 'conda' && runtime_backend != 'none' && runtime_reference != 'Not configured' ? runtime_reference : null
+        } catch (MissingPropertyException _ignored) {
+            // `nextflow inspect` evaluates directives before process inputs are bound.
+            null
+        }
+    }
+    conda {
+        try {
+            runtime_backend == 'conda' && runtime_reference != 'Not configured' ? runtime_reference : null
+        } catch (MissingPropertyException _ignored) {
+            // `nextflow inspect` evaluates directives before process inputs are bound.
+            null
+        }
+    }
 
     input:
-    val report_container
+    tuple val(runtime_process), val(runtime_backend), val(runtime_reference)
 
     output:
     path "runtime_environment_mqc.tsv", emit: multiqc_table
@@ -17,8 +33,10 @@ process REPORTENVIRONMENT {
     cat <<-END_MQC > runtime_environment_mqc.tsv
     field\tvalue
     Process\t${task.process}
+    Runtime source process\t${runtime_process}
+    Runtime backend\t${runtime_backend}
+    Runtime reference\t${runtime_reference ?: 'Not configured'}
     Container engine\t${workflow.containerEngine ?: 'None'}
-    Container\t${report_container ?: 'Not configured'}
     Python\tNot available
     END_MQC
 

@@ -32,7 +32,6 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
     input             //  string: Path to input samplesheet
-    report_container  //  string: Container image used to render the report
     help              // boolean: Display help message and exit
     help_full         // boolean: Show the full help message
     show_hidden       // boolean: Show hidden parameters in the help message
@@ -110,12 +109,9 @@ workflow PIPELINE_INITIALISATION {
         }
         .set { ch_samplesheet }
 
-    ch_report_container = channel.value(report_container)
-
     emit:
-    samplesheet       = ch_samplesheet
-    report_container = ch_report_container
-    versions         = ch_versions
+    samplesheet = ch_samplesheet
+    versions    = ch_versions
 }
 
 /*

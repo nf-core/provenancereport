@@ -8,7 +8,7 @@
 
 `nf-core/provenancereport` validates a samplesheet and renders one Quarto HTML report using all files listed in the samplesheet. The pipeline does not perform biological analysis itself. Instead, it provides a reproducible Nextflow wrapper around a user-supplied or bundled Quarto notebook so that input file paths, workflow versions, and execution metadata are captured consistently.
 
-The default report notebook is `assets/provenance_report.qmd`. You can replace it by passing `--notebook path/to/report.qmd`. In practice, this can be any Quarto notebook that can run non-interactively inside the image selected with `--report_container` and read the files listed in the samplesheet.
+The default report notebook is `assets/provenance_report.qmd`. You can replace it by passing `--notebook path/to/report.qmd`. In practice, this can be any Quarto notebook that can run non-interactively inside the container or Conda environment configured for `QUARTONOTEBOOK` and read the files listed in the samplesheet.
 
 ## Samplesheet input
 
@@ -113,7 +113,7 @@ The main workflow performs eight steps:
 2. The workflow selects the notebook using `--notebook`, or the bundled `assets/provenance_report.qmd` if `--notebook` is unset.
 3. `QUARTONOTEBOOK` renders one Quarto HTML report using all samplesheet rows. The process receives `[meta, notebook]`, a parameter map, and the actual input files as a plain path channel. Its official eval outputs provide versions for software present in its runtime environment; empty version values are discarded.
 4. `MD5SUM` calculates MD5 checksums for every samplesheet input and for the rendered Quarto HTML report.
-5. `REPORTENVIRONMENT` runs in the same `--report_container` image as `QUARTONOTEBOOK` and captures its resolved container reference, `R sessionInfo()`, and Python version. Missing R or Python installations are reported as unavailable without failing the run.
+5. `REPORTENVIRONMENT` receives the resolved `QUARTONOTEBOOK` runtime metadata and inherits the matching container image or Conda environment when one is configured. It captures the runtime backend, runtime reference, activated Conda path when available, `R sessionInfo()`, and Python version. Missing R or Python installations are reported as unavailable without failing the run.
 6. If `--document` is set, the workflow stages the supplied review file into the published results via `STAGE_FILE`.
 7. `MULTIQC` collates the input samplesheet, file checksums, pipeline outputs, workflow parameters, software versions, runtime-environment information, and Nextflow execution profile.
 8. The workflow publishes the Quarto and MultiQC reports, report artifacts, checksums, the optional review document, and standard pipeline metadata under `pipeline_info/`.
@@ -138,16 +138,24 @@ nextflow run nf-core/provenancereport --input ./samplesheet.csv --outdir ./resul
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
-Use `--report_container` when a custom notebook requires a different image. The pipeline uses this image for both Quarto rendering and runtime metadata collection:
+When a custom notebook requires a different runtime, configure `QUARTONOTEBOOK` with a normal Nextflow process selector. For a container runtime:
+
+```groovy title="custom-container.config"
+process {
+    withName: '.*:QUARTONOTEBOOK' {
+        container = 'quay.io/your-org/quarto-report:latest'
+    }
+}
+```
 
 ```bash
 nextflow run nf-core/provenancereport \
     --input ./samplesheet.csv \
     --notebook ./custom_report.qmd \
     --document ./review-signoff.pdf \
-    --report_container community.wave.seqera.io/library/my-report-environment:tag \
     --outdir ./results \
-    -profile docker
+    -profile docker \
+    -c custom-container.config
 ```
 
 Note that the pipeline will create the following files in your working directory:
@@ -265,16 +273,27 @@ Whilst the default requirements set within the pipeline will hopefully work for 
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#set-max-resources) and [customise process resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#customize-process-resources) section of the nf-core website.
 
-### Custom Containers
+### Custom Report Runtimes
 
-In some cases, you may wish to change the container or conda environment used by a pipeline step. This is especially relevant for `nf-core/provenancereport`, because a custom Quarto notebook may require additional R, Python, Julia, system, or Quarto extension dependencies that are not available in the default `QUARTONOTEBOOK` container.
+In some cases, you may wish to change the container or Conda environment used by `QUARTONOTEBOOK`. This is especially relevant for `nf-core/provenancereport`, because a custom Quarto notebook may require additional R, Python, Julia, system, or Quarto extension dependencies that are not available in the default runtime.
 
-You can provide any Quarto notebook with `--notebook`, as long as the container used for `QUARTONOTEBOOK` contains Quarto plus all packages required by that notebook. Override the process container in a Nextflow config file with the `container` directive, for example:
+You can provide any Quarto notebook with `--notebook`, as long as the runtime configured for `QUARTONOTEBOOK` contains Quarto plus all packages required by that notebook. Override the process runtime in a Nextflow config file. For a container runtime:
 
 ```groovy title="custom-container.config"
 process {
     withName: '.*:QUARTONOTEBOOK' {
         container = 'quay.io/your-org/quarto-report:latest'
+    }
+}
+```
+
+For a Conda runtime:
+
+```groovy title="custom-conda.config"
+process {
+    withName: '.*:QUARTONOTEBOOK' {
+        conda = '/path/to/report-env.yml'
+        container = null
     }
 }
 ```
@@ -289,6 +308,8 @@ nextflow run nf-core/provenancereport \
     --notebook report.qmd \
     --outdir results
 ```
+
+`REPORTENVIRONMENT` inherits the resolved `QUARTONOTEBOOK` container or Conda environment when possible. With no managed runtime, the runtime-environment table reports `Not configured`.
 
 For more general guidance, see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
 

@@ -37,13 +37,6 @@
                     "description": "Path to a Quarto notebook used to render the provenance report. If unset, the bundled default notebook is used.",
                     "fa_icon": "fas fa-file-code"
                 },
-                "report_container": {
-                    "type": "string",
-                    "default": "community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665",
-                    "description": "Container image used both to render the Quarto notebook and to collect its R and Python runtime information.",
-                    "help_text": "Set this to an image containing Quarto and all dependencies required by the selected notebook. The same image is used by the runtime-environment collector so that MultiQC reports information from the report-rendering environment.",
-                    "fa_icon": "fas fa-box"
-                },
                 "document": {
                     "type": "string",
                     "format": "file-path",

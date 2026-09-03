@@ -1,5 +1,5 @@
 {
-    "collect report runtime environment": {
+    "collect report runtime environment - none": {
         "content": [
             {
                 "multiqc_r_session": [
@@ -10,7 +10,41 @@
                 ]
             }
         ],
-        "timestamp": "2026-08-26T19:51:31.376957352",
+        "timestamp": "2026-08-26T20:51:36.422137565",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "collect report runtime environment - container": {
+        "content": [
+            {
+                "multiqc_r_session": [
+                    "r_session_info_mqc.yaml"
+                ],
+                "multiqc_table": [
+                    "runtime_environment_mqc.tsv"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T20:51:20.558085891",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "collect report runtime environment - conda": {
+        "content": [
+            {
+                "multiqc_r_session": [
+                    "r_session_info_mqc.yaml"
+                ],
+                "multiqc_table": [
+                    "runtime_environment_mqc.tsv"
+                ]
+            }
+        ],
+        "timestamp": "2026-08-26T20:51:28.491881966",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

@@ -8,12 +8,16 @@ nextflow_process {
     tag "modules_local"
     tag "reportenvironment"
 
-    test("collect report runtime environment") {
+    test("collect report runtime environment - container") {
 
         when {
             process {
                 """
-                input[0] = 'community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665'
+                input[0] = [
+                    'QUARTONOTEBOOK',
+                    'docker',
+                    'community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665'
+                ]
                 """
             }
         }
@@ -21,6 +25,53 @@ nextflow_process {
         then {
             assertAll {
                 { assert process.success }
+                { assert !path(process.out.multiqc_table.first()).text.contains('Conda environment path') }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["multiqc_table", "multiqc_r_session"])).match() }
+            }
+        }
+    }
+
+    test("collect report runtime environment - conda") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'QUARTONOTEBOOK',
+                    'conda',
+                    "${projectDir}/modules/local/reportenvironment/tests/environment.yml"
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert !path(process.out.multiqc_table.first()).text.contains('Conda environment path') }
+                { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["multiqc_table", "multiqc_r_session"])).match() }
+            }
+        }
+    }
+
+    test("collect report runtime environment - none") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'QUARTONOTEBOOK',
+                    'none',
+                    'Not configured'
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll {
+                { assert process.success }
+                { assert !path(process.out.multiqc_table.first()).text.contains('Conda environment path') }
                 { assert snapshot(sanitizeOutput(process.out, unstableKeys: ["multiqc_table", "multiqc_r_session"])).match() }
             }
         }

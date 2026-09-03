@@ -107,6 +107,16 @@ output:
           description: Quarto extensions used during report rendering.
           pattern: "*"
           ontologies: []
+  runtime_environment:
+    - - ${task.process}:
+          type: string
+          description: The name of the process
+      - "${workflow.containerEngine ?: (task.conda ? 'conda' : 'none')}":
+          type: string
+          description: The active runtime backend, such as a container engine, `conda`, or `none`
+      - "${(workflow.containerEngine ? task.container : task.conda) ?: 'Not configured'}":
+          type: string
+          description: The resolved container image or Conda reference, or `Not configured` when no managed runtime is configured
   versions_quarto:
     - - ${task.process}:
           type: string
