@@ -11,10 +11,10 @@ Changes in 'quartonotebook/meta.yml':
 +    - - ${task.process}:
 +          type: string
 +          description: The name of the process
-+      - "${workflow.containerEngine ?: (task.conda ? 'conda' : 'none')}":
++      - "${workflow.containerEngine ?: (task.executor == 'awsbatch' ? 'awsbatch' : (task.conda ? 'conda' : 'none'))}":
 +          type: string
-+          description: The active runtime backend, such as a container engine, `conda`, or `none`
-+      - "${(workflow.containerEngine ? task.container : task.conda) ?: 'Not configured'}":
++          description: The active runtime backend, such as a container engine, AWS Batch, `conda`, or `none`
++      - "${((workflow.containerEngine || task.executor == 'awsbatch') ? task.container : task.conda) ?: 'Not configured'}":
 +          type: string
 +          description: The resolved container image or Conda reference, or `Not configured` when no managed runtime is configured
    versions_quarto:
@@ -28,7 +28,7 @@ Changes in 'quartonotebook/main.nf':
      tuple val(meta), path("params.yml")                                                        , emit: params_yaml
      tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
      tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
-+    tuple val("${task.process}"), val("${workflow.containerEngine ?: (task.conda ? 'conda' : 'none')}"), val("${(workflow.containerEngine ? task.container : task.conda) ?: 'Not configured'}"), emit: runtime_environment
++    tuple val("${task.process}"), val("${workflow.containerEngine ?: (task.executor == 'awsbatch' ? 'awsbatch' : (task.conda ? 'conda' : 'none'))}"), val("${((workflow.containerEngine || task.executor == 'awsbatch') ? task.container : task.conda) ?: 'Not configured'}"), emit: runtime_environment
      tuple val("${task.process}"), val('quarto'), eval('quarto -v'), emit: versions_quarto, topic: versions
      tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
  
