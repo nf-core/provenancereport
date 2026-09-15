@@ -1,6 +1,6 @@
 nextflow_pipeline {
 
-    name "Test pipeline with custom quartonotebook"
+    name "Test pipeline with custom quarto notebook"
     script "../main.nf"
     tag "pipeline"
 

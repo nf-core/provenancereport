@@ -2,7 +2,7 @@
     "-profile test": {
         "content": [
             {
-                "QUARTONOTEBOOK": {
+                "QUARTO_NOTEBOOK": {
                     "papermill": "2.6.0",
                     "quarto": "1.7.31"
                 },
@@ -49,16 +49,16 @@
                 "provenance_report.qmd:md5,4fd8ffa820d1e7620135853517275d66"
             ]
         ],
-        "timestamp": "2026-09-11T17:24:40.71898211",
+        "timestamp": "2026-09-15T12:56:43.985671257",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     },
     "-profile test with --document": {
         "content": [
             {
-                "QUARTONOTEBOOK": {
+                "QUARTO_NOTEBOOK": {
                     "papermill": "2.6.0",
                     "quarto": "1.7.31"
                 },
@@ -108,10 +108,10 @@
                 "review_signoff.md:md5,0662c5a0325d10cdcd542d83dc2d300b"
             ]
         ],
-        "timestamp": "2026-09-11T17:25:09.914803847",
+        "timestamp": "2026-09-15T12:57:35.38518277",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

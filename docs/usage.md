@@ -8,7 +8,7 @@
 
 `nf-core/provenancereport` validates a samplesheet and renders one Quarto HTML report using all files listed in the samplesheet. The pipeline does not perform biological analysis itself. Instead, it provides a reproducible Nextflow wrapper around a user-supplied or bundled Quarto notebook so that input file paths, workflow versions, and execution metadata are captured consistently.
 
-The default report notebook is `assets/provenance_report.qmd`. You can replace it by passing `--notebook path/to/report.qmd`. In practice, this can be any Quarto notebook that can run non-interactively inside the container or Conda environment configured for `QUARTONOTEBOOK` and read the files listed in the samplesheet.
+The default report notebook is `assets/provenance_report.qmd`. You can replace it by passing `--notebook path/to/report.qmd`. In practice, this can be any Quarto notebook that can run non-interactively inside the container or Conda environment configured for `QUARTO_NOTEBOOK` and read the files listed in the samplesheet.
 
 ## Requirements
 
@@ -54,7 +54,7 @@ An [example samplesheet](../assets/samplesheet.csv) has been provided with the p
 
 Custom reports should be written to read files from the Quarto task working directory, not from their original source locations. The samplesheet `path` values may point to local files, URLs, or object storage paths, but Nextflow stages each file into the render task using the file basename.
 
-Custom Quarto reports must include a `params` section in the YAML front matter. These defaults define the parameter structure that the `QUARTONOTEBOOK` module will populate at render time:
+Custom Quarto reports must include a `params` section in the YAML front matter. These defaults define the parameter structure that the `QUARTO_NOTEBOOK` module will populate at render time:
 
 ```yaml
 params:
@@ -130,9 +130,9 @@ The main workflow performs nine steps:
 
 1. `PIPELINE_INITIALISATION` validates `--input` with the `nf-schema` plugin and resolves each `path` entry as a single file.
 2. The workflow selects the notebook using `--notebook`, or the bundled `assets/provenance_report.qmd` if `--notebook` is unset.
-3. `QUARTONOTEBOOK` renders one Quarto HTML report using all samplesheet rows. The process receives `[meta, notebook]`, a parameter map, and the actual input files as a plain path channel. Its official eval outputs provide versions for software present in its runtime environment; empty version values are discarded.
+3. `QUARTO_NOTEBOOK` renders one Quarto HTML report using all samplesheet rows. The process receives `[meta, notebook]`, a parameter map, and the actual input files as a plain path channel. Its official eval outputs provide versions for software present in its runtime environment; empty version values are discarded.
 4. `MD5SUM` calculates MD5 checksums for every samplesheet input and for the rendered Quarto HTML report.
-5. `REPORTENVIRONMENT` receives the resolved `QUARTONOTEBOOK` runtime metadata and inherits the matching container image or Conda environment when one is configured. It captures the runtime backend, runtime reference, `R sessionInfo()`, and Python version. Missing R or Python installations are reported as unavailable without failing the run.
+5. `REPORTENVIRONMENT` receives the resolved `QUARTO_NOTEBOOK` runtime metadata and inherits the matching container image or Conda environment when one is configured. It captures the runtime backend, runtime reference, `R sessionInfo()`, and Python version. Missing R or Python installations are reported as unavailable without failing the run.
 6. If `--document` is set, the workflow stages the supplied review file into the published results via `STAGE_FILE`.
 7. `MULTIQC` collates the input samplesheet, file checksums, pipeline outputs, workflow parameters, software versions, runtime-environment information, and Nextflow execution profile.
 8. The `nf-prov` plugin generates BCO and Workflow Run RO-Crate provenance records.
@@ -158,11 +158,11 @@ nextflow run nf-core/provenancereport --input ./samplesheet.csv --outdir ./resul
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
 
-When a custom notebook requires a different runtime, configure `QUARTONOTEBOOK` with a normal Nextflow process selector. For a container runtime:
+When a custom notebook requires a different runtime, configure `QUARTO_NOTEBOOK` with a normal Nextflow process selector. For a container runtime:
 
 ```groovy title="custom-container.config"
 process {
-    withName: '.*:QUARTONOTEBOOK' {
+    withName: '.*:QUARTO_NOTEBOOK' {
         container = 'quay.io/your-org/quarto-report:latest'
     }
 }
@@ -295,13 +295,13 @@ To change the resource requests, please see the [max resources](https://nf-co.re
 
 ### Custom Report Runtimes
 
-In some cases, you may wish to change the container or Conda environment used by `QUARTONOTEBOOK`. This is especially relevant for `nf-core/provenancereport`, because a custom Quarto notebook may require additional R, Python, Julia, system, or Quarto extension dependencies that are not available in the default runtime.
+In some cases, you may wish to change the container or Conda environment used by `QUARTO_NOTEBOOK`. This is especially relevant for `nf-core/provenancereport`, because a custom Quarto notebook may require additional R, Python, Julia, system, or Quarto extension dependencies that are not available in the default runtime.
 
-You can provide any Quarto notebook with `--notebook`, as long as the runtime configured for `QUARTONOTEBOOK` contains Quarto plus all packages required by that notebook. Override the process runtime in a Nextflow config file. For a container runtime:
+You can provide any Quarto notebook with `--notebook`, as long as the runtime configured for `QUARTO_NOTEBOOK` contains Quarto plus all packages required by that notebook. Override the process runtime in a Nextflow config file. For a container runtime:
 
 ```groovy title="custom-container.config"
 process {
-    withName: '.*:QUARTONOTEBOOK' {
+    withName: '.*:QUARTO_NOTEBOOK' {
         container = 'quay.io/your-org/quarto-report:latest'
     }
 }
@@ -311,7 +311,7 @@ For a Conda runtime:
 
 ```groovy title="custom-conda.config"
 process {
-    withName: '.*:QUARTONOTEBOOK' {
+    withName: '.*:QUARTO_NOTEBOOK' {
         conda = '/path/to/report-env.yml'
         container = null
     }
@@ -329,7 +329,7 @@ nextflow run nf-core/provenancereport \
     --outdir results
 ```
 
-`REPORTENVIRONMENT` inherits the resolved `QUARTONOTEBOOK` container or Conda environment when possible. With no managed runtime, the runtime-environment table reports `Not configured`.
+`REPORTENVIRONMENT` inherits the resolved `QUARTO_NOTEBOOK` container or Conda environment when possible. With no managed runtime, the runtime-environment table reports `Not configured`.
 
 For more general guidance, see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
 

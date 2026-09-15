@@ -2,7 +2,7 @@
     "-profile test with external RDS input": {
         "content": [
             {
-                "QUARTONOTEBOOK": {
+                "QUARTO_NOTEBOOK": {
                     "papermill": "2.7.0",
                     "quarto": "1.9.38"
                 },
@@ -48,10 +48,10 @@
                 "external_rds_report.qmd:md5,33c6e034d026f8d8d619711bec521665"
             ]
         ],
-        "timestamp": "2026-09-11T17:26:31.173617532",
+        "timestamp": "2026-09-15T13:09:37.154798919",
         "meta": {
-            "nf-test": "0.9.4",
-            "nextflow": "25.10.4"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
         }
     }
 }

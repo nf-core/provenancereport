@@ -36,7 +36,7 @@ The default workflow performs the following steps:
 
 1. Validate and normalise the input samplesheet with `nf-schema`.
 2. Resolve each `path` entry from the samplesheet as one input file.
-3. Render one Quarto notebook with all listed files using the nf-core `quartonotebook` module.
+3. Render one Quarto notebook with all listed files using the nf-core `quarto_notebook` module.
 4. Calculate MD5 checksums for every samplesheet input and the rendered Quarto HTML using the nf-core `md5sum` module.
 5. Run `REPORTENVIRONMENT` in the resolved Quarto runtime to collect the R session, Python version, and container or Conda environment details.
 6. If `--document` is provided, publish the review or sign-off document with the pipeline results.

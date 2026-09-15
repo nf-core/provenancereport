@@ -9,21 +9,12 @@ Initial release of nf-core/provenancereport, created with the [nf-core](https://
 
 ### `Added`
 
-- [#22](https://github.com/nf-core/provenancereport/pull/22) - Switch to workflow outputs.
-- [#35](https://github.com/nf-core/provenancereport/pull/35) - Add test full.
-- [#32](https://github.com/nf-core/provenancereport/pull/32) - Refactor report runtime environment collection into the local `REPORTENVIRONMENT` module.
-- Report and inherit the resolved `QUARTONOTEBOOK` runtime environment in `REPORTENVIRONMENT`, including container and Conda runtimes.
-- [#26](https://github.com/nf-core/provenancereport/issues/26) - Attach documentation to pipeline run.
-- [#8](https://github.com/nf-core/provenancereport/issues/8) - Add a MultiQC execution report with run configuration and report-runtime environment metadata.
-- [#23](https://github.com/nf-core/provenancereport/pull/23) - Add MD5 checksums for all samplesheet inputs and the rendered Quarto report to the MultiQC execution report.
-- [#18](https://github.com/nf-core/provenancereport/pull/18) - Document the required Quarto report `params`and input names in samplesheet.
-- [#16](https://github.com/nf-core/provenancereport/pull/16) - Add a test case with a user-provided quarto input with an external RDS file and user-provided custom container.
-- [#15](https://github.com/nf-core/provenancereport/pull/15) - First draft implementation of provenancereport pipeline.
-- [#19](https://github.com/nf-core/provenancereport/pull/19) - Integrate nf-prov and metadata capture.
-- [#29](https://github.com/nf-core/provenancereport/pull/29) - List QUARTONOTEBOOK html report in seqera.
-
-### `Fixed`
-
-### `Dependencies`
-
-### `Deprecated`
+- Validate and normalise samplesheets containing one or more report input files.
+- Render a bundled or user-provided Quarto notebook in a reproducible container or Conda environment.
+- Publish the rendered HTML report, source notebook, and report-generated artifacts.
+- Generate MD5 checksums for all report inputs and the rendered report.
+- Capture the report runtime environment, including container or Conda details, R session information, and the Python version.
+- Generate a MultiQC audit report containing inputs, outputs, checksums, parameters, software versions, and runtime metadata.
+- Publish an optional review or sign-off document alongside the pipeline results.
+- Generate BioCompute Object and Workflow Run RO-Crate provenance records with `nf-prov`.
+- Publish standard Nextflow execution reports and expose the rendered report and MultiQC report in Seqera Platform.

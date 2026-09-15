@@ -1,9 +1,14 @@
-// NB: You'll likely want to override this with a container containing all
+// NB 1: You'll likely want to override this with a container containing all
 // required dependencies for your analyses. Or use wave to build the container
 // for you from the environment.yml You'll at least need Quarto itself,
 // Papermill and whatever language you are running your analyses on; you can see
 // an example in this module's environment file.
-process QUARTONOTEBOOK {
+//
+// NB 2: You'll need to export the versions of the packages you are using inside
+// your notebook to a `versions.csv` file (formatted as `package,version`),
+// which will be added to the `versions` topic; module versions are handled
+// separately by `eval()` statements.
+process QUARTO_NOTEBOOK {
     tag "${meta.id}"
     label 'process_low'
     conda "${moduleDir}/environment.yml"
@@ -24,7 +29,8 @@ process QUARTONOTEBOOK {
     tuple val(meta), path("${notebook_parameters.artifact_dir}/*")                             , emit: artifacts  , optional: true
     tuple val(meta), path("_extensions")                                                       , emit: extensions , optional: true
     tuple val("${task.process}"), val("${workflow.containerEngine ?: (task.executor == 'awsbatch' ? 'awsbatch' : (task.conda ? 'conda' : 'none'))}"), val("${((workflow.containerEngine || task.executor == 'awsbatch') ? task.container : task.conda) ?: 'Not configured'}"), emit: runtime_environment
-    tuple val("${task.process}"), val('quarto'), eval('quarto -v'), emit: versions_quarto, topic: versions
+    path "versions.yml"                                                                        , emit: versions          , topic: versions
+    tuple val("${task.process}"), val('quarto'), eval('quarto -v')                             , emit: versions_quarto   , topic: versions
     tuple val("${task.process}"), val('papermill'), eval('papermill --version | cut -f1 -d" "'), emit: versions_papermill, topic: versions
 
     when:
@@ -79,6 +85,12 @@ process QUARTONOTEBOOK {
         ${args} \\
         --execute-params params.yml \\
         --output ${prefix}.html
+
+    # Write notebook package versions to YAML
+    cat <<- END_VERSIONS > versions.yml
+    "${task.process}":
+    \$(awk -F',' '{printf "    %s: %s\\n", \$1, \$2}' versions.csv)
+    END_VERSIONS
     """
 
     stub:
@@ -101,5 +113,6 @@ process QUARTONOTEBOOK {
 
     touch ${prefix}.html
     touch params.yml
+    touch versions.yml
     """
 }

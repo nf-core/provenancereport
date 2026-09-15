@@ -31,6 +31,9 @@ workflow NFCORE_PROVENANCEREPORT {
 
     take:
     samplesheet // channel: samplesheet read in from --input
+    input       // channel: input samplesheet file
+    notebook    // channel: Quarto notebook file
+    document    // channel: optional supporting document
 
     main:
 
@@ -39,6 +42,9 @@ workflow NFCORE_PROVENANCEREPORT {
     //
     PROVENANCEREPORT (
         samplesheet,
+        input,
+        notebook,
+        document,
         params.outdir,
     )
 
@@ -69,6 +75,8 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.notebook,
+        params.document,
         params.help,
         params.help_full,
         params.show_hidden
@@ -78,7 +86,10 @@ workflow {
     // WORKFLOW: Run main workflow
     //
     NFCORE_PROVENANCEREPORT (
-        PIPELINE_INITIALISATION.out.samplesheet
+        PIPELINE_INITIALISATION.out.samplesheet,
+        PIPELINE_INITIALISATION.out.input,
+        PIPELINE_INITIALISATION.out.notebook,
+        PIPELINE_INITIALISATION.out.document,
     )
     //
     // SUBWORKFLOW: Run completion tasks

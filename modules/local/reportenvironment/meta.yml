@@ -14,9 +14,18 @@ tools:
       licence: ["MIT"]
       identifier: ""
 input:
-  - runtime_environment:
-      type: tuple
-      description: Runtime metadata emitted by QUARTONOTEBOOK, including source process, runtime backend, and runtime reference
+  - - runtime_process:
+        type: map
+        description: |
+          Source process emitted by QUARTO_NOTEBOOK
+    - runtime_backend:
+        type: map
+        description: |
+          Runtime backend emitted by QUARTO_NOTEBOOK
+    - runtime_reference:
+        type: map
+        description: |
+          Runtime reference emitted by QUARTO_NOTEBOOK
 output:
   multiqc_table:
     - - runtime_environment_mqc.tsv:
