@@ -1,0 +1,36 @@
+nextflow_pipeline {
+
+    name "Test pipeline with custom quarto notebook"
+    script "../main.nf"
+    tag "pipeline"
+
+    test("-profile test with custom notebook") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                input = "${projectDir}/tests/assets/samplesheet_quartonotebook.csv"
+                notebook = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/notebooks/quarto/quarto_r.qmd"
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata_*.json'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assertAll(
+                { assert stable_path.findAll { path -> path.startsWith("quartonotebook/") && path.endsWith(".html") }.size() == 1 },
+                { assert snapshot(
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() },
+            )
+        }
+    }
+}

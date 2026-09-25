@@ -22,8 +22,8 @@
             "@id": "./",
             "@type": "Dataset",
             "creativeWorkStatus": "Stable",
-            "datePublished": "2026-09-16T22:32:30+00:00",
-            "description": "<h1>\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/images/nf-core-provenancereport_logo_dark.png\">\n    <img alt=\"nf-core/provenancereport\" src=\"docs/images/nf-core-provenancereport_logo_light.png\">\n  </picture>\n</h1>\n\n[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/nf-core/provenancereport)\n[![GitHub Actions CI Status](https://github.com/nf-core/provenancereport/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/provenancereport/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/nf-core/provenancereport/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/provenancereport/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/provenancereport/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.4-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.1.0-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.1.0)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/provenancereport)\n\n[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23provenancereport-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/provenancereport)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)\n\n## Introduction\n\n**nf-core/provenancereport** is a bioinformatics pipeline that ...\n\n<!-- TODO nf-core:\n   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the\n   major pipeline sections and the types of output it produces. You're giving an overview to someone new\n   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction\n-->\n\n<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core\n     workflows use the \"tube map\" design for that. See https://nf-co.re/docs/community/brand/workflow-schematics#examples for examples.   -->\n<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.\n\n<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.\n     Explain what rows and columns represent. For instance (please edit as appropriate):\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`samplesheet.csv`:\n\n```csv\nsample,fastq_1,fastq_2\nCONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz\n```\n\nEach row represents a fastq file (single-end) or a pair of fastq files (paired end).\n\n-->\n\nNow, you can run the pipeline using:\n\n<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->\n\n```bash\nnextflow run nf-core/provenancereport \\\n   -profile <docker/singularity/.../institute> \\\n   --input samplesheet.csv \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).\n\nFor more details and further functionality, please refer to the [usage documentation](https://nf-co.re/provenancereport/usage) and the [parameter documentation](https://nf-co.re/provenancereport/parameters).\n\n## Pipeline output\n\nTo see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/provenancereport/results) tab on the nf-core website pipeline page.\nFor more details about the output files and reports, please refer to the\n[output documentation](https://nf-co.re/provenancereport/output).\n\n## Credits\n\nnf-core/provenancereport was originally written by Alexander Peltzer, Gregor Sturm, Julian Schwab.\n\nWe thank the following people for their extensive assistance in the development of this pipeline:\n\n<!-- TODO nf-core: If applicable, make list of people who have also contributed -->\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).\n\nFor further information or help, don't hesitate to get in touch on the [Slack `#provenancereport` channel](https://nfcore.slack.com/channels/provenancereport) (you can join with [this invite](https://nf-co.re/join/slack)).\n\n## Citations\n\n<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->\n<!-- If you use nf-core/provenancereport for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->\n\n<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nYou can cite the `nf-core` publication as follows:\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
+            "datePublished": "2026-09-22T13:21:42+00:00",
+            "description": "<h1>\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/images/nf-core-provenancereport_logo_dark.png\">\n    <img alt=\"nf-core/provenancereport\" src=\"docs/images/nf-core-provenancereport_logo_light.png\">\n  </picture>\n</h1>\n\n[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/nf-core/provenancereport)\n[![GitHub Actions CI Status](https://github.com/nf-core/provenancereport/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/provenancereport/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/nf-core/provenancereport/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/provenancereport/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/provenancereport/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.XXXXXXX)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.4-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.0.2-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.0.2)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/provenancereport)\n\n[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23provenancereport-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/provenancereport)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)\n\n## Introduction\n\n**nf-core/provenancereport** is a reporting pipeline that validates a samplesheet and renders reproducible Quarto reports. The samplesheet has two columns, `id` and `path`, where each row points to one input file. The pipeline stages all listed files into a single Quarto render and publishes the rendered report plus any generated artifacts.\n\n### Requirements\n\n- Nextflow `25.10.4` or later.\n- A supported execution environment such as Docker, Singularity, Apptainer, or Conda. Docker or Singularity is recommended for reproducibility.\n- Read access to the samplesheet and every file it references, plus write access to `--outdir`.\n- For a custom `--notebook`, a configured report runtime containing Quarto and every language, package, and system dependency used by that notebook.\n\nSee the [usage requirements](docs/usage.md#requirements) for details.\n\nThe default workflow performs the following steps:\n\n1. Validate and normalise the input samplesheet with `nf-schema`.\n2. Resolve each `path` entry from the samplesheet as one input file.\n3. Render one Quarto notebook with all listed files using the nf-core `quarto_notebook` module.\n4. Calculate MD5 checksums for every samplesheet input and the rendered Quarto HTML using the nf-core `md5sum` module.\n5. Run `REPORTENVIRONMENT` in the resolved Quarto runtime to collect the R session, Python version, and container or Conda environment details.\n6. If `--document` is provided, publish the review or sign-off document with the pipeline results.\n7. Generate a MultiQC audit report containing the input samplesheet, file checksums, published outputs, run configuration, software versions, and runtime information.\n8. Generate BCO and Workflow Run RO-Crate provenance with the `nf-prov` plugin.\n9. Publish the reports, artifacts, checksums, and standard Nextflow execution metadata.\n\n![nf-core/provenancereport metro map](docs/images/provenancereport_metro.svg)\n\n## Usage\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.\n\nFirst, prepare a samplesheet with your input data that looks as follows:\n\n`samplesheet.csv`:\n\n```csv\nid,path\ncounts,counts.tsv\nmetadata,metadata.tsv\n```\n\nEach row represents exactly one input file. The `id` value is included in `params$input_ids`, and `path` must point to a single file.\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run nf-core/provenancereport \\\n   -profile <docker/singularity/.../institute> \\\n   --input samplesheet.csv \\\n   --outdir <OUTDIR>\n```\n\nBy default, the pipeline renders the bundled notebook in `assets/provenance_report.qmd`. To render your own custom Quarto notebook, provide `--notebook custom_report.qmd`.\n\nReport inputs are staged into the Quarto render working directory by basename. Custom notebooks should read those staged filenames directly, for example `readxl::read_xlsx(\"counts.xlsx\")`, and every file listed in the samplesheet must have a unique basename. See the usage documentation for details on designing custom reports.\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).\n\nFor more details and further functionality, please refer to the [usage documentation](https://nf-co.re/provenancereport/usage) and the [parameter documentation](https://nf-co.re/provenancereport/parameters).\n\n## Pipeline output\n\nA successful run produces:\n\n- `quartonotebook/*.html`: the rendered Quarto report, plus the source notebook and any report artifacts.\n- `md5sum/provenancereport.md5`: checksums for every samplesheet input and the rendered report.\n- `multiqc/multiqc_report.html`: an audit report covering inputs, checksums, outputs, parameters, software versions, and the report runtime.\n- `pipeline_info/manifest_<timestamp>.bco.json` and `ro-crate-metadata_<timestamp>.json`: BCO and Workflow Run RO-Crate provenance.\n- `pipeline_info/`: Nextflow execution reports, trace, DAG, parameters, and collected software versions.\n- The original review or sign-off file at the results root when `--document` is provided.\n\nFor the complete directory layout and guidance on interpreting each file, see the [output documentation](https://nf-co.re/provenancereport/output).\n\n## Credits\n\nnf-core/provenancereport was originally written by Alexander Peltzer, Gregor Sturm, Julian Schwab.\n\nWe thank the following people for their extensive assistance in the development of this pipeline:\n\nAntonia Saracco, Delfina Terradas, Anabella Trigila.\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).\n\nFor further information or help, don't hesitate to get in touch on the [Slack `#provenancereport` channel](https://nfcore.slack.com/channels/provenancereport) (you can join with [this invite](https://nf-co.re/join/slack)).\n\n## Citations\n\n<!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->\n<!-- If you use nf-core/provenancereport for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->\n\nPlease cite the core reporting and provenance software used by the pipeline:\n\n> **Quarto.**\n>\n> J.J. Allaire, Charles Teague, Carlos Scheidegger, Yihui Xie, Christophe Dervieux & Gordon Woodhull.\n>\n> _Computer software._ [https://quarto.org/](https://quarto.org/).\n\n> **nf-prov: Nextflow plugin to render provenance reports for pipeline runs.**\n>\n> Nextflow.\n>\n> _Computer software_, version 1.7.0. [nextflow-io/nf-prov](https://github.com/nextflow-io/nf-prov/releases/tag/1.7.0).\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nYou can cite the `nf-core` publication as follows:\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
             "hasPart": [
                 {
                     "@id": "main.nf"
@@ -39,6 +39,15 @@
                 },
                 {
                     "@id": "docs/images/"
+                },
+                {
+                    "@id": "modules/"
+                },
+                {
+                    "@id": "modules/local/"
+                },
+                {
+                    "@id": "modules/nf-core/"
                 },
                 {
                     "@id": "workflows/"
@@ -93,7 +102,7 @@
             },
             "mentions": [
                 {
-                    "@id": "#0c701c6a-6315-4e5e-ba14-7e0a44345d59"
+                    "@id": "#9c8342f9-3e4f-4318-b616-e5fc7a4d8016"
                 }
             ],
             "name": "nf-core/provenancereport"
@@ -115,21 +124,57 @@
         },
         {
             "@id": "main.nf",
-            "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "author": [
+                {
+                    "@id": "https://orcid.org/0000-0002-6503-2180"
+                },
+                {
+                    "@id": "https://orcid.org/0000-0001-9584-7842"
+                },
+                {
+                    "@id": "#389f8d14-17f9-423d-b27d-841c4ffc8356"
+                },
+                {
+                    "@id": "#fef2269f-7963-4dc8-bc24-968869c48b27"
+                },
+                {
+                    "@id": "#cb264fef-6335-42b4-9b1a-0aefd79bd555"
+                },
+                {
+                    "@id": "https://orcid.org/0000-0001-6755-9763"
+                }
+            ],
             "dateCreated": "",
-            "dateModified": "2026-09-16T22:32:30Z",
+            "dateModified": "2026-09-22T13:21:42Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
-            "keywords": ["nf-core", "nextflow"],
-            "license": ["MIT"],
-            "name": ["nf-core/provenancereport"],
+            "keywords": [
+                "nf-core",
+                "nextflow"
+            ],
+            "license": [
+                "MIT"
+            ],
+            "name": [
+                "nf-core/provenancereport"
+            ],
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
             },
             "sdPublisher": {
                 "@id": "https://nf-co.re/"
             },
-            "url": ["https://github.com/nf-core/provenancereport", "https://nf-co.re/provenancereport//"],
-            "version": ["", "1.0.0dev"]
+            "url": [
+                "https://github.com/nf-core/provenancereport",
+                "https://nf-co.re/provenancereport/1.0.0/"
+            ],
+            "version": [
+                "1.0.0"
+            ]
         },
         {
             "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow",
@@ -144,11 +189,11 @@
             "version": "!>=25.10.4"
         },
         {
-            "@id": "#0c701c6a-6315-4e5e-ba14-7e0a44345d59",
+            "@id": "#9c8342f9-3e4f-4318-b616-e5fc7a4d8016",
             "@type": "TestSuite",
             "instance": [
                 {
-                    "@id": "#63d79171-ce13-4bb8-8f08-02c78cc9fc61"
+                    "@id": "#0feffbdf-7bb3-4f2e-84fe-0c6aa57b3f8a"
                 }
             ],
             "mainEntity": {
@@ -157,7 +202,7 @@
             "name": "Test suite for nf-core/provenancereport"
         },
         {
-            "@id": "#63d79171-ce13-4bb8-8f08-02c78cc9fc61",
+            "@id": "#0feffbdf-7bb3-4f2e-84fe-0c6aa57b3f8a",
             "@type": "TestInstance",
             "name": "GitHub Actions workflow for testing nf-core/provenancereport",
             "resource": "repos/nf-core/provenancereport/actions/workflows/nf-test.yml",
@@ -193,6 +238,21 @@
             "@id": "docs/images/",
             "@type": "Dataset",
             "description": "Images for the documentation files"
+        },
+        {
+            "@id": "modules/",
+            "@type": "Dataset",
+            "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
+        },
+        {
+            "@id": "modules/nf-core/",
+            "@type": "Dataset",
+            "description": "nf-core modules"
         },
         {
             "@id": "workflows/",
@@ -274,6 +334,52 @@
             "@type": "Organization",
             "name": "nf-core",
             "url": "https://nf-co.re/"
+        },
+        {
+            "@id": "https://orcid.org/0000-0002-6503-2180",
+            "@type": "Person",
+            "affiliation": "Boehringer Ingelheim",
+            "email": "apeltzer@users.noreply.github.com",
+            "name": "Alexander Peltzer",
+            "url": "https://github.com/apeltzer"
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-9584-7842",
+            "@type": "Person",
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Gregor Sturm",
+            "url": "https://github.com/grst"
+        },
+        {
+            "@id": "#389f8d14-17f9-423d-b27d-841c4ffc8356",
+            "@type": "Person",
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Julian Schwab",
+            "url": "https://github.com/julianSchwab"
+        },
+        {
+            "@id": "#fef2269f-7963-4dc8-bc24-968869c48b27",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "antonia.saracco@zs.com",
+            "name": "Antonia Saracco",
+            "url": "https://github.com/antoniasaracco"
+        },
+        {
+            "@id": "#cb264fef-6335-42b4-9b1a-0aefd79bd555",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "155591053+delfiterradas@users.noreply.github.com",
+            "name": "Delfina Terradas",
+            "url": "https://github.com/delfiterradas"
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-6755-9763",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "18577080+atrigila@users.noreply.github.com",
+            "name": "Anabella Trigila",
+            "url": "https://github.com/atrigila"
         }
     ]
 }

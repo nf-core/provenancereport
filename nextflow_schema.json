@@ -2,7 +2,7 @@
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://raw.githubusercontent.com/nf-core/provenancereport/master/nextflow_schema.json",
     "title": "nf-core/provenancereport pipeline parameters",
-    "description": "A simple provenance reporting pipeline",
+    "description": "A simple pipeline to produce provenance / auditable reports when executing a report. ",
     "type": "object",
     "$defs": {
         "input_output_options": {
@@ -19,8 +19,8 @@
                     "schema": "assets/schema_input.json",
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/provenancereport/usage#samplesheet-input).",
+                    "description": "Path to comma-separated file containing ids and file paths to include in the report.",
+                    "help_text": "Create a samplesheet with two columns: id and path. Each row must point to exactly one file; all rows are rendered together in the selected Quarto notebook. See [usage docs](https://nf-co.re/provenancereport/usage#samplesheet-input).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {
@@ -28,6 +28,21 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "notebook": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "pattern": "^\\S+\\.qmd$",
+                    "description": "Path to a Quarto notebook used to render the provenance report. If unset, the bundled default notebook is used.",
+                    "fa_icon": "fas fa-file-code"
+                },
+                "document": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "description": "Path to a documentation file to track that the provenance report has been reviewed.",
+                    "fa_icon": "fas fa-file-code"
                 },
                 "email": {
                     "type": "string",

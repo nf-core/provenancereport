@@ -1,0 +1,55 @@
+%%metro style: nfcore
+%%metro file: samplesheet | CSV | Samplesheet
+%%metro file: custom_report | QMD | Custom report
+%%metro file: custom_config | CONF | Custom config
+%%metro file: review_document | FILE | --document optional
+%%metro file: quarto_report | HTML | Quarto report
+%%metro file: multiqc_report | HTML | MultiQC report
+%%metro file: review_output | FILE | Review document
+%%metro file: checksums | MD5 | Checksums
+%%metro file: bco | JSON | BCO
+%%metro file: rocrate | JSON | RO-Crate
+%%metro line: report | Provenance report | #24B064
+%%metro line: review | Optional review document | #F28E2B | dashed
+%%metro legend: bl
+
+graph LR
+    subgraph initialisation [Initialisation]
+        samplesheet[ ]
+        custom_report[ ]
+        custom_config[ ]
+        review_document[ ]
+    end
+
+    subgraph provenance [Provenance report]
+        quartonotebook[QUARTONOTEBOOK]
+        md5sum[MD5SUM]
+        reportenvironment[REPORTENVIRONMENT]
+        multiqc[MULTIQC]
+        nfprov[nf-prov plugin]
+    end
+
+    subgraph outputs [Outputs]
+        quarto_report[ ]
+        multiqc_report[ ]
+        review_output[ ]
+        checksums[ ]
+        bco[ ]
+        rocrate[ ]
+    end
+
+    samplesheet -->|report| quartonotebook
+    custom_report -->|report| quartonotebook
+    custom_config -->|report| quartonotebook
+    quartonotebook -->|report| quarto_report
+    quartonotebook -->|report| md5sum
+    quartonotebook -->|report| reportenvironment
+    md5sum -->|report| multiqc
+    reportenvironment -->|report| multiqc
+    multiqc -->|report| multiqc_report
+    md5sum -->|report| checksums
+    quartonotebook -->|report| nfprov
+    nfprov -->|report| bco
+    nfprov -->|report| rocrate
+
+    review_document -->|review| review_output

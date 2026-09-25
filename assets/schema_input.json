@@ -4,30 +4,24 @@
     "title": "nf-core/provenancereport pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
+    "minItems": 1,
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "id": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+                "errorMessage": "Input id must start with a letter or underscore and contain only letters, numbers and underscores",
                 "meta": ["id"]
             },
-            "fastq_1": {
+            "path": {
                 "type": "string",
                 "format": "file-path",
                 "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
-            },
-            "fastq_2": {
-                "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "pattern": "^\\S+$",
+                "errorMessage": "Path must point to exactly one file and cannot contain spaces or comma-separated values"
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["id", "path"]
     }
 }

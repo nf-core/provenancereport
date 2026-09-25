@@ -1,0 +1,57 @@
+{
+    "-profile test with external RDS input": {
+        "content": [
+            {
+                "QUARTO_NOTEBOOK": {
+                    "papermill": "2.7.0",
+                    "quarto": "1.9.38"
+                },
+                "Workflow": {
+                    "nf-core/provenancereport": "v1.0.0"
+                }
+            },
+            [
+                "artifacts.csv",
+                "document.csv",
+                "md5sum",
+                "md5sum/provenancereport.md5",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_file_checksums_table.txt",
+                "multiqc/multiqc_data/multiqc_input_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_pipeline_outputs.txt",
+                "multiqc/multiqc_data/multiqc_runtime_environment.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "multiqc_report.csv",
+                "pipeline_info",
+                "pipeline_info/README.md",
+                "pipeline_info/external_rds_report.qmd",
+                "pipeline_info/main.nf",
+                "pipeline_info/nextflow.config",
+                "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
+                "pipeline_info/samplesheet_rds.csv",
+                "quartonotebook",
+                "quartonotebook/artifacts",
+                "quartonotebook/artifacts/external_rds_summary.tsv",
+                "quartonotebook/external_rds_report.html",
+                "quartonotebook/external_rds_report.qmd"
+            ],
+            [
+                "external_rds_summary.tsv:md5,26d3aee09ee5b92e17f0dce912a750aa",
+                "external_rds_report.qmd:md5,33c6e034d026f8d8d619711bec521665"
+            ]
+        ],
+        "timestamp": "2026-09-23T13:34:18.383578471",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

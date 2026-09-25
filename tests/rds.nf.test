@@ -1,0 +1,28 @@
+nextflow_pipeline {
+
+    name "Test pipeline with external RDS input"
+    script "../main.nf"
+    config "tests/assets/quartonotebook_rds.config"
+    tag "pipeline"
+    tag "rds"
+
+    test("-profile test with external RDS input") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata_*.json'])
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assert snapshot(
+                removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
+                stable_path,
+                stable_content
+            ).match()
+        }
+    }
+}

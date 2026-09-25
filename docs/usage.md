@@ -6,51 +6,147 @@
 
 ## Introduction
 
-<!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
+`nf-core/provenancereport` validates a samplesheet and renders one Quarto HTML report using all files listed in the samplesheet. The pipeline does not perform biological analysis itself. Instead, it provides a reproducible Nextflow wrapper around a user-supplied or bundled Quarto notebook so that input file paths, workflow versions, and execution metadata are captured consistently.
+
+The default report notebook is `assets/provenance_report.qmd`. You can replace it by passing `--notebook path/to/report.qmd`. In practice, this can be any Quarto notebook that can run non-interactively inside the container or Conda environment configured for `QUARTO_NOTEBOOK` and read the files listed in the samplesheet.
+
+## Requirements
+
+Before running the pipeline, ensure that the execution environment provides:
+
+- Nextflow `25.10.4` or later. Check the installed version with `nextflow -version`.
+- One supported software profile and its corresponding runtime. Docker or Singularity is recommended for reproducibility; Apptainer, Podman, Conda, and the other profiles listed under [`-profile`](#-profile) are also supported.
+- Read access to the samplesheet and every local or remote path it references.
+- Write access to `--outdir`. Use an absolute output path when running on cloud infrastructure.
+- For a custom `--notebook`, a report runtime containing Quarto and all R, Python and system dependencies used by the notebook. The bundled notebook uses the pipeline's default runtime.
+
+## Input parameters
+
+| Parameter    | Required | Description                                                                                                                                                |
+| ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `--input`    | Yes      | CSV samplesheet containing at least one data row and the required `id` and `path` columns. All rows are rendered together in one report.                   |
+| `--outdir`   | Yes      | Directory in which published reports, checksums, provenance records, and execution metadata are written.                                                   |
+| `--notebook` | No       | Quarto `.qmd` file to render. Defaults to the bundled `assets/provenance_report.qmd`.                                                                      |
+| `--document` | No       | Review or sign-off file to publish with the results and list in MultiQC. It is retained for traceability and is not used as an input to the Quarto render. |
 
 ## Samplesheet input
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+Create a samplesheet with the files you would like to make available to the report. It must be a comma-separated file with a header row and the columns shown below.
 
 ```bash
 --input '[path to samplesheet file]'
 ```
 
-### Multiple runs of the same sample
-
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
-
 ```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+id,path
+counts,counts.tsv
+metadata,metadata.tsv
 ```
 
-### Full samplesheet
-
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
-
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
-
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
-```
-
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+| Column | Description                                                                                                                                       |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`   | Unique input identifier. It must be a valid parameter name: start with a letter or underscore and contain only letters, numbers, and underscores. |
+| `path` | Path or URL to exactly one input file. Comma-separated values are not allowed.                                                                    |
 
 An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+
+## Designing a custom Quarto report
+
+Custom reports should be written to read files from the Quarto task working directory, not from their original source locations. The samplesheet `path` values may point to local files, URLs, or object storage paths, but Nextflow stages each file into the render task using the file basename.
+
+Custom Quarto reports must include a `params` section in the YAML front matter. These defaults define the parameter structure that the `QUARTO_NOTEBOOK` module will populate at render time:
+
+```yaml
+params:
+  meta: NULL
+  input_dir: ./
+  input_filename: NULL
+  artifact_dir: NULL
+  cpus: 1
+  input_ids: NULL
+  input_files: NULL
+  input_file_count: 0
+```
+
+For example, this samplesheet:
+
+```csv title="samplesheet.csv"
+id,path
+expression,input/expression_sample.xlsx
+metadata,s3://example-bucket/project/metadata.tsv
+```
+
+makes these files available beside the Quarto notebook during rendering:
+
+```text
+expression_sample.xlsx
+metadata.tsv
+```
+
+The report should therefore read:
+
+```r
+expression <- readxl::read_xlsx("expression_sample.xlsx")
+metadata <- readr::read_tsv("metadata.tsv")
+```
+
+and should not read from the original samplesheet locations:
+
+```r
+# Do not do this inside the report
+readxl::read_xlsx("input/expression_sample.xlsx")
+readr::read_tsv("s3://example-bucket/project/metadata.tsv")
+```
+
+Because parent directories are stripped during staging, every file listed in the samplesheet must have a unique basename. This is valid:
+
+```csv title="samplesheet.csv"
+id,path
+expression_xlsx,input/expression_sample.xlsx
+expression_csv,input/expression_sample.csv
+```
+
+Currently this is not valid for the current staging layout because both rows would be staged as `expression.xlsx`:
+
+```csv title="samplesheet.csv"
+id,path
+cohort_a,cohort_a/input/expression.xlsx
+cohort_b,cohort_b/input/expression.xlsx
+```
+
+## Review document input
+
+Use `--document` to attach a review or sign-off file to the run, for example a completed checklist, SOP, approval form, or other traceability record:
+
+```bash
+--document '[path to review document]'
+```
+
+When set, the pipeline stages this file into the results and adds it to the "Pipeline Outputs" table in the MultiQC report so the run records which review document was supplied. This parameter is optional and does not affect Quarto rendering itself.
+
+## How the pipeline works
+
+The main workflow performs nine steps:
+
+1. `PIPELINE_INITIALISATION` validates `--input` with the `nf-schema` plugin and resolves each `path` entry as a single file.
+2. The workflow selects the notebook using `--notebook`, or the bundled `assets/provenance_report.qmd` if `--notebook` is unset.
+3. `QUARTO_NOTEBOOK` renders one Quarto HTML report using all samplesheet rows. The process receives `[meta, notebook]`, a parameter map, and the actual input files as a plain path channel. Its official eval outputs provide versions for software present in its runtime environment; empty version values are discarded.
+4. `MD5SUM` calculates MD5 checksums for every samplesheet input and for the rendered Quarto HTML report.
+5. `REPORTENVIRONMENT` receives the resolved `QUARTO_NOTEBOOK` runtime metadata and inherits the matching container image or Conda environment when one is configured. It captures the runtime backend, runtime reference, `R sessionInfo()`, and Python version. Missing R or Python installations are reported as unavailable without failing the run.
+6. If `--document` is set, the workflow materializes the supplied review file with `collectFile` so it can be published with the results without launching an additional process.
+7. `MULTIQC` collates the input samplesheet, file checksums, pipeline outputs, workflow parameters, software versions, runtime-environment information, and Nextflow execution profile.
+8. The `nf-prov` plugin generates BCO and Workflow Run RO-Crate provenance records.
+9. The workflow publishes the Quarto and MultiQC reports, report artifacts, checksums, the optional review document, and standard pipeline metadata under `pipeline_info/`.
+
+The notebook receives these useful parameters:
+
+| Parameter               | Description                                                                                                          |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `params$meta`           | Metadata map for the report, including `id`, `report_file_name`, `input_ids`, `input_files`, and `input_file_count`. |
+| `params$input_dir`      | Working directory containing the staged input files. Defaults to `./`.                                               |
+| `params$input_filename` | Staged filename for the first samplesheet row, provided for compatibility with simple Quarto notebook templates.     |
+| `params$artifact_dir`   | Directory where the notebook should write images, tables, and other artifacts to be published by the pipeline.       |
+| `params$cpus`           | CPUs allocated to the Quarto render task.                                                                            |
 
 ## Running the pipeline
 
@@ -61,6 +157,26 @@ nextflow run nf-core/provenancereport --input ./samplesheet.csv --outdir ./resul
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.
+
+When a custom notebook requires a different runtime, configure `QUARTO_NOTEBOOK` with a normal Nextflow process selector. For a container runtime:
+
+```groovy title="custom-container.config"
+process {
+    withName: '.*:QUARTO_NOTEBOOK' {
+        container = 'quay.io/your-org/quarto-report:latest'
+    }
+}
+```
+
+```bash
+nextflow run nf-core/provenancereport \
+    --input ./samplesheet.csv \
+    --notebook ./custom_report.qmd \
+    --document ./review-signoff.pdf \
+    --outdir ./results \
+    -profile docker \
+    -c custom-container.config
+```
 
 Note that the pipeline will create the following files in your working directory:
 
@@ -87,10 +203,13 @@ nextflow run nf-core/provenancereport -profile docker -params-file params.yaml
 with:
 
 ```yaml title="params.yaml"
-input: './samplesheet.csv'
-outdir: './results/'
-<...>
+input: "./samplesheet.csv"
+outdir: "./results/"
+notebook: "./custom_report.qmd"
+document: "./review-signoff.pdf"
 ```
+
+The `notebook` and `document` entries are optional. If `notebook` is omitted, the bundled `assets/provenance_report.qmd` notebook is used. If `document` is omitted, no review document is staged and the corresponding MultiQC section is not added.
 
 You can also generate such `YAML`/`JSON` files via [nf-core/launch](https://nf-co.re/launch).
 
@@ -152,7 +271,7 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `apptainer`
   - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `wave`
-  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow `24.03.0-edge` or later).
+  - A generic configuration profile to enable [Wave](https://seqera.io/wave/) containers. Use together with one of the above (requires Nextflow ` 24.03.0-edge` or later).
 - `conda`
   - A generic configuration profile to be used with [Conda](https://conda.io/docs/). Please only use Conda as a last resort i.e. when it's not possible to run the pipeline with Docker, Singularity, Podman, Shifter, Charliecloud, or Apptainer.
 
@@ -174,11 +293,45 @@ Whilst the default requirements set within the pipeline will hopefully work for 
 
 To change the resource requests, please see the [max resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#set-max-resources) and [customise process resources](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#customize-process-resources) section of the nf-core website.
 
-### Custom Containers
+### Custom Report Runtimes
 
-In some cases, you may wish to change the container or conda environment used by a pipeline steps for a particular tool. By default, nf-core pipelines use containers and software from the [biocontainers](https://biocontainers.pro/) or [bioconda](https://bioconda.github.io/) projects. However, in some cases the pipeline specified version maybe out of date.
+In some cases, you may wish to change the container or Conda environment used by `QUARTO_NOTEBOOK`. This is especially relevant for `nf-core/provenancereport`, because a custom Quarto notebook may require additional R, Python, Julia, system, or Quarto extension dependencies that are not available in the default runtime.
 
-To use a different container from the default container or conda environment specified in a pipeline, please see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
+You can provide any Quarto notebook with `--notebook`, as long as the runtime configured for `QUARTO_NOTEBOOK` contains Quarto plus all packages required by that notebook. Override the process runtime in a Nextflow config file. For a container runtime:
+
+```groovy title="custom-container.config"
+process {
+    withName: '.*:QUARTO_NOTEBOOK' {
+        container = 'quay.io/your-org/quarto-report:latest'
+    }
+}
+```
+
+For a Conda runtime:
+
+```groovy title="custom-conda.config"
+process {
+    withName: '.*:QUARTO_NOTEBOOK' {
+        conda = '/path/to/report-env.yml'
+        container = null
+    }
+}
+```
+
+Then run the pipeline with both your execution profile and the custom config:
+
+```bash
+nextflow run nf-core/provenancereport \
+    -profile docker \
+    -c custom-container.config \
+    --input samplesheet.csv \
+    --notebook report.qmd \
+    --outdir results
+```
+
+`REPORTENVIRONMENT` inherits the resolved `QUARTO_NOTEBOOK` container or Conda environment when possible. With no managed runtime, the runtime-environment table reports `Not configured`.
+
+For more general guidance, see the [updating tool versions](https://nf-co.re/docs/running/configuration/nextflow-for-your-system#update-tool-versions) section of the nf-core website.
 
 ### Custom Tool Arguments
 

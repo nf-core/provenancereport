@@ -1,0 +1,81 @@
+---
+title-block: none
+format:
+  html:
+    toc: true
+    embed-resources: true
+    self-contained: true
+params:
+  meta: NULL
+  input_dir: ./
+  input_filename: NULL
+  artifact_dir: NULL
+  cpus: 1
+  input_ids: NULL
+  input_files: NULL
+  input_file_count: 0
+---
+
+# Provenance report
+
+This report was rendered by `nf-core/provenancereport` from all files listed in the input samplesheet.
+
+```{r setup}
+#| include: false
+report_id <- if (!is.null(params$meta$id)) params$meta$id else "report"
+artifact_dir <- params$artifact_dir
+if (is.null(artifact_dir) || artifact_dir == "") {
+    artifact_dir <- "artifacts"
+}
+dir.create(artifact_dir, showWarnings = FALSE, recursive = TRUE)
+split_param <- function(value) {
+    if (is.null(value) || !nzchar(value)) {
+        return(character())
+    }
+    strsplit(value, ",", fixed = TRUE)[[1]]
+}
+input_ids <- split_param(params$meta$input_ids)
+input_files <- split_param(params$meta$input_files)
+input_table <- data.frame(
+    id = input_ids,
+    file = input_files,
+    stringsAsFactors = FALSE
+)
+write.table(
+    input_table,
+    file = file.path(artifact_dir, paste0(report_id, "_input_files.tsv")),
+    sep = "\t",
+    row.names = FALSE,
+    quote = FALSE
+)
+writeLines(
+    c(
+        paste0("report_id: ", report_id),
+        paste0("input_file_count: ", length(input_files))
+    ),
+    con = file.path(artifact_dir, paste0(report_id, "_summary.txt"))
+)
+```
+
+## Report metadata
+
+- Report id: `r report_id`
+- Input file count: `r length(input_files)`
+- CPUs available to the report task: `r params$cpus`
+
+## Input files
+
+The samplesheet `id` values are provided through `params$meta$input_ids`, and staged filenames are provided through `params$meta$input_files` in the same order.
+
+```{r input-files}
+#| echo: false
+if (length(input_files) == 0) {
+    cat("No input files were supplied.\n")
+} else {
+    knitr::kable(input_table, col.names = c("Input id", "Staged file"))
+}
+```
+
+## Artifacts
+
+This notebook writes a small TSV and text summary into `params$artifact_dir`. Custom notebooks can use the same parameter to write tables, images, or other report artifacts for publication by the pipeline.

@@ -1,0 +1,56 @@
+{
+    "-profile test with custom notebook": {
+        "content": [
+            {
+                "QUARTO_NOTEBOOK": {
+                    "papermill": "2.6.0",
+                    "quarto": "1.7.31"
+                },
+                "Workflow": {
+                    "nf-core/provenancereport": "v1.0.0"
+                }
+            },
+            [
+                "artifacts.csv",
+                "document.csv",
+                "md5sum",
+                "md5sum/provenancereport.md5",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_file_checksums_table.txt",
+                "multiqc/multiqc_data/multiqc_input_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_pipeline_outputs.txt",
+                "multiqc/multiqc_data/multiqc_runtime_environment.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "multiqc_report.csv",
+                "pipeline_info",
+                "pipeline_info/README.md",
+                "pipeline_info/main.nf",
+                "pipeline_info/nextflow.config",
+                "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
+                "pipeline_info/samplesheet_quartonotebook.csv",
+                "quartonotebook",
+                "quartonotebook/artifacts",
+                "quartonotebook/artifacts/artifact.txt",
+                "quartonotebook/quarto_r.html",
+                "quartonotebook/quarto_r.qmd"
+            ],
+            [
+                "artifact.txt:md5,b10a8db164e0754105b7a99be72e3fe5",
+                "quarto_r.qmd:md5,a6a7392a32a4a2f5637fd8245b936031"
+            ]
+        ],
+        "timestamp": "2026-09-22T14:52:41.198896846",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
