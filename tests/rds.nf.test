@@ -17,12 +17,20 @@ nextflow_pipeline {
         then {
             def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json'])
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def software_versions = removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml")
+            def notebook_versions = software_versions.remove('QUARTO_NOTEBOOK')
+            def required_notebook_tools = ['SingleCellExperiment', 'SummarizedExperiment', 'papermill', 'quarto']
             assert workflow.success
-            assert snapshot(
-                removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
-                stable_path,
-                stable_content
-            ).match()
+            assertAll(
+                { assert required_notebook_tools.every { tool -> notebook_versions?.get(tool)?.toString()?.trim() } },
+                { assert (notebook_versions?.size() ?: 0) > required_notebook_tools.size() },
+                { assert snapshot(
+                    // Transitive notebook package versions vary by runtime profile; required entries are asserted above.
+                    software_versions,
+                    stable_path,
+                    stable_content
+                ).match() },
+            )
         }
     }
 }

@@ -8,30 +8,6 @@
                 "MULTIQC": {
                     "multiqc": "1.35"
                 },
-                "QUARTO_NOTEBOOK": {
-                    "R": "4.4.3",
-                    "cli": "3.6.5",
-                    "compiler": "4.4.3",
-                    "datasets": "4.4.3",
-                    "digest": "0.6.37",
-                    "evaluate": "1.0.3",
-                    "fastmap": "1.2.0",
-                    "grDevices": "4.4.3",
-                    "graphics": "4.4.3",
-                    "htmltools": "0.5.8.1",
-                    "jsonlite": "2.0.0",
-                    "knitr": "1.50",
-                    "methods": "4.4.3",
-                    "papermill": "2.6.0",
-                    "quarto": "1.7.31",
-                    "rlang": "1.1.6",
-                    "rmarkdown": "2.29",
-                    "stats": "4.4.3",
-                    "tools": "4.4.3",
-                    "utils": "4.4.3",
-                    "xfun": "0.52",
-                    "yaml": "2.3.10"
-                },
                 "QUARTO_PREPARE": {
                     "python": "3.12.11",
                     "pyyaml": "6.0.2"
@@ -99,30 +75,6 @@
                 },
                 "MULTIQC": {
                     "multiqc": "1.35"
-                },
-                "QUARTO_NOTEBOOK": {
-                    "R": "4.4.3",
-                    "cli": "3.6.5",
-                    "compiler": "4.4.3",
-                    "datasets": "4.4.3",
-                    "digest": "0.6.37",
-                    "evaluate": "1.0.3",
-                    "fastmap": "1.2.0",
-                    "grDevices": "4.4.3",
-                    "graphics": "4.4.3",
-                    "htmltools": "0.5.8.1",
-                    "jsonlite": "2.0.0",
-                    "knitr": "1.50",
-                    "methods": "4.4.3",
-                    "papermill": "2.6.0",
-                    "quarto": "1.7.31",
-                    "rlang": "1.1.6",
-                    "rmarkdown": "2.29",
-                    "stats": "4.4.3",
-                    "tools": "4.4.3",
-                    "utils": "4.4.3",
-                    "xfun": "0.52",
-                    "yaml": "2.3.10"
                 },
                 "QUARTO_PREPARE": {
                     "python": "3.12.11",
