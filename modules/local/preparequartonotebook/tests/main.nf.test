@@ -1,0 +1,173 @@
+nextflow_process {
+
+    name "Test Process QUARTO_PREPARE"
+    script "../main.nf"
+    process "QUARTO_PREPARE"
+
+    tag "modules"
+    tag "modules_local"
+    tag "preparequartonotebook"
+
+    test("prepare R notebook using runtime-loaded namespaces") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'r_dynamic' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/r_dynamic.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def source = path("${projectDir}/modules/local/preparequartonotebook/tests/assets/r_dynamic.qmd")
+            def prepared = path(process.out.notebook[0][1])
+            assertAll(
+                { assert process.success },
+                { assert prepared.fileName.toString() == "prepared_${source.fileName}" },
+                { assert prepared.text.startsWith(source.text) },
+                { assert prepared.text.contains('packages <- sort(setdiff(loadedNamespaces(), "base"))') },
+                { assert !source.text.contains('nf-core-package-versions') },
+                { assert snapshot(process.out.findAll { key, _value -> key.startsWith('versions') }).match() },
+            )
+        }
+    }
+
+    test("prepare Python notebook using runtime-loaded modules") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'python_dynamic' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/python_dynamic.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def prepared = path(process.out.notebook[0][1])
+            assertAll(
+                { assert process.success },
+                { assert prepared.text.contains('_nfcore_loaded_modules = set(_nfcore_sys.modules)') },
+                { assert prepared.text.contains('_nfcore_metadata.packages_distributions()') },
+                { assert !prepared.text.contains('__NFCORE_PYTHON_MODULES__') },
+            )
+        }
+    }
+
+    test("append fallback when notebook code and prose mention versions.csv") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'explicit_versions' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/explicit_versions.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def prepared = path(process.out.notebook[0][1]).text
+            assertAll(
+                { assert process.success },
+                { assert prepared.contains('writeLines("curated-package,1.2.3", "versions.csv")') },
+                { assert prepared.contains('if (!file.exists("versions.csv"))') },
+                { assert prepared.count('nf-core-package-versions') == 1 },
+            )
+        }
+    }
+
+    test("ignore YAML-like text outside the initial front matter") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'yaml_like_code' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/yaml_like_code.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            def prepared = path(process.out.notebook[0][1]).text
+            assertAll(
+                { assert process.success },
+                { assert prepared.contains('loadedNamespaces()') },
+                { assert !prepared.contains('_nfcore_loaded_modules = set(_nfcore_sys.modules)') },
+            )
+        }
+    }
+
+    test("reject mixed R and Python notebooks") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'mixed' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/mixed.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains('mixed R and Python code cells are not supported') },
+            )
+        }
+    }
+
+    test("reject unsupported notebook engines") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'unsupported' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/unsupported.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.failed },
+                { assert process.errorReport.contains("Quarto engine 'markdown' is not supported") },
+            )
+        }
+    }
+
+    test("prepare notebook - stub") {
+
+        options "-stub"
+
+        when {
+            process {
+                """
+                input[0] = [
+                    [ id:'r_dynamic' ],
+                    file("${projectDir}/modules/local/preparequartonotebook/tests/assets/r_dynamic.qmd", checkIfExists: true)
+                ]
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert process.success },
+                { assert path(process.out.notebook[0][1]).text.contains('Runtime R package capture') },
+            )
+        }
+    }
+}

@@ -1,0 +1,98 @@
+nextflow_workflow {
+
+    name "Test Workflow RENDER_QUARTO_WITH_PROVENANCE"
+    script "../main.nf"
+    workflow "RENDER_QUARTO_WITH_PROVENANCE"
+
+    tag "subworkflows"
+    tag "subworkflows_local"
+    tag "render_quarto_with_provenance"
+
+    test("prepare and render an R notebook without explicit versions") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'missing_versions' ],
+                    file("${projectDir}/subworkflows/local/render_quarto_with_provenance/tests/assets/missing_versions.qmd", checkIfExists: true)
+                ])
+                input[1] = Channel.value([:])
+                input[2] = Channel.value([])
+                input[3] = Channel.value([])
+                """
+            }
+        }
+
+        then {
+            def html = path(workflow.out.html[0][1])
+            def notebook = path(workflow.out.notebook[0][1])
+            def params_yaml = path(workflow.out.params_yaml[0][1])
+            def versions = path(workflow.out.versions[0])
+            assertAll(
+                { assert workflow.success },
+                { assert workflow.out.html[0][0].id == 'missing_versions' },
+                { assert html.exists() },
+                { assert notebook.fileName.toString() == 'prepared_missing_versions.qmd' },
+                { assert notebook.text.contains('nf-core-package-versions') },
+                { assert params_yaml.exists() },
+                { assert versions.text.contains('    R: "') },
+                { assert workflow.out.runtime_environment },
+                { assert workflow.out.versions_quarto },
+                { assert workflow.out.versions_papermill },
+            )
+        }
+    }
+
+    test("preserve explicit notebook package versions") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'explicit_versions' ],
+                    file("${projectDir}/subworkflows/local/render_quarto_with_provenance/tests/assets/explicit_versions.qmd", checkIfExists: true)
+                ])
+                input[1] = Channel.value([:])
+                input[2] = Channel.value([])
+                input[3] = Channel.value([])
+                """
+            }
+        }
+
+        then {
+            def notebook = path(workflow.out.notebook[0][1])
+            def versions = path(workflow.out.versions[0])
+            assertAll(
+                { assert workflow.success },
+                { assert notebook.text.contains('nf-core-package-versions') },
+                { assert versions.text.contains('curated-package: "1.50"') },
+                { assert !versions.text.contains('    R: "') },
+            )
+        }
+    }
+
+    test("reject malformed explicit notebook package versions") {
+
+        when {
+            workflow {
+                """
+                input[0] = Channel.of([
+                    [ id:'malformed_versions' ],
+                    file("${projectDir}/subworkflows/local/render_quarto_with_provenance/tests/assets/malformed_versions.qmd", checkIfExists: true)
+                ])
+                input[1] = Channel.value([:])
+                input[2] = Channel.value([])
+                input[3] = Channel.value([])
+                """
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert (workflow.stdout + workflow.stderr).any { line -> line.contains('versions.csv must contain exactly two non-empty comma-separated fields') } },
+            )
+        }
+    }
+}

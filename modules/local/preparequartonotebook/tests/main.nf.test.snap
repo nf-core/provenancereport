@@ -1,0 +1,27 @@
+{
+    "prepare R notebook using runtime-loaded namespaces": {
+        "content": [
+            {
+                "versions_python": [
+                    [
+                        "QUARTO_PREPARE",
+                        "python",
+                        "3.12.11"
+                    ]
+                ],
+                "versions_pyyaml": [
+                    [
+                        "QUARTO_PREPARE",
+                        "pyyaml",
+                        "6.0.2"
+                    ]
+                ]
+            }
+        ],
+        "timestamp": "2026-10-08T14:18:19.351224844",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

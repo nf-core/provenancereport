@@ -1,0 +1,7 @@
+---
+title: YAML-like text outside front matter
+---
+
+```{r}
+yaml_example <- "jupyter: python3"
+```

@@ -21,42 +21,50 @@
 
 ## Introduction
 
-**nf-core/provenancereport** is a bioinformatics pipeline that ...
+**nf-core/provenancereport** is a reporting pipeline that validates a samplesheet and renders reproducible Quarto reports. The samplesheet has two columns, `id` and `path`, where each row points to one input file. The pipeline stages all listed files into a single Quarto render and publishes the rendered report plus any generated artifacts.
 
-<!-- TODO nf-core:
-   Complete this sentence with a 2-3 sentence summary of what types of data the pipeline ingests, a brief overview of the
-   major pipeline sections and the types of output it produces. You're giving an overview to someone new
-   to nf-core here, in 15-20 seconds. For an example, see https://github.com/nf-core/rnaseq/blob/master/README.md#introduction
--->
+### Requirements
 
-<!-- TODO nf-core: Include a figure that guides the user through the major workflow steps. Many nf-core
-     workflows use the "tube map" design for that. See https://nf-co.re/docs/community/brand/workflow-schematics#examples for examples.   -->
-<!-- TODO nf-core: Fill in short bullet-pointed list of the default steps in the pipeline -->
+- Nextflow `25.10.4` or later.
+- A supported execution environment such as Docker, Singularity, Apptainer, or Conda. Docker or Singularity is recommended for reproducibility.
+- Read access to the samplesheet and every file it references, plus write access to `--outdir`.
+- For a custom `--notebook`, a configured report runtime containing Quarto and every language, package, and system dependency used by that notebook.
+
+See the [usage requirements](docs/usage.md#requirements) for details.
+
+The default workflow performs the following steps:
+
+1. Validate and normalise the input samplesheet with `nf-schema`.
+2. Resolve each `path` entry from the samplesheet as one input file.
+3. Create a cached, traceable notebook copy with a guarded R or Python package-version fallback.
+4. Render one Quarto notebook with all listed files and record package versions from the notebook session using the nf-core `quarto_notebook` module.
+5. Calculate MD5 checksums for every samplesheet input, the rendered Quarto HTML, and the optional review document using the nf-core `md5sum` module.
+6. Run `REPORTENVIRONMENT` in the resolved Quarto runtime to collect the R session, Python version, and container or Conda environment details.
+7. If `--document` is provided, publish the review or sign-off document with the pipeline results.
+8. Generate a MultiQC audit report containing the input samplesheet, file checksums, published outputs, run configuration, software versions, and runtime information.
+9. Generate BCO and Workflow Run RO-Crate provenance with the `nf-prov` plugin.
+10. Publish the reports, artifacts, checksums, and standard Nextflow execution metadata.
+
+![nf-core/provenancereport metro map](docs/images/provenancereport_metro.svg)
 
 ## Usage
 
 > [!NOTE]
 > If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.
 
-<!-- TODO nf-core: Describe the minimum required steps to execute the pipeline, e.g. how to prepare samplesheets.
-     Explain what rows and columns represent. For instance (please edit as appropriate):
-
 First, prepare a samplesheet with your input data that looks as follows:
 
 `samplesheet.csv`:
 
 ```csv
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
+id,path
+counts,counts.tsv
+metadata,metadata.tsv
 ```
 
-Each row represents a fastq file (single-end) or a pair of fastq files (paired end).
-
--->
+Each row represents exactly one input file. The `id` value is included in `params$meta$input_ids`, and `path` must point to a single file.
 
 Now, you can run the pipeline using:
-
-<!-- TODO nf-core: update the following command to include all required parameters for a minimal example -->
 
 ```bash
 nextflow run nf-core/provenancereport \
@@ -65,6 +73,12 @@ nextflow run nf-core/provenancereport \
    --outdir <OUTDIR>
 ```
 
+By default, the pipeline renders the bundled notebook in `assets/provenance_report.qmd`. To render your own custom Quarto notebook, provide `--notebook custom_report.qmd`.
+
+Report inputs are staged into the Quarto render working directory by basename. Custom notebooks should read those staged filenames directly, for example `readxl::read_xlsx("counts.xlsx")`, and every file listed in the samplesheet must have a unique basename. See the usage documentation for details on designing custom reports.
+
+Custom notebooks should write the packages they use to `versions.csv` as `package,version` rows when a curated direct-dependency list is required. This explicit file is authoritative. The pipeline always appends a guarded hidden cell to an internal notebook copy; when no explicit file exists, that cell records packages loaded at runtime in the R session or Python kernel. The original notebook is never modified. See the [package-version guidance](docs/usage.md#recording-notebook-package-versions) for examples and limitations.
+
 > [!WARNING]
 > Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).
 
@@ -72,9 +86,16 @@ For more details and further functionality, please refer to the [usage documenta
 
 ## Pipeline output
 
-To see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/provenancereport/results) tab on the nf-core website pipeline page.
-For more details about the output files and reports, please refer to the
-[output documentation](https://nf-co.re/provenancereport/output).
+A successful run produces:
+
+- `quartonotebook/*.html`: the rendered Quarto report, plus the prepared source notebook and any report artifacts. `reports.csv`, `notebook.csv`, and `artifacts.csv` index those published outputs for provenance reporting.
+- `md5sum/provenancereport.md5`: checksums for every samplesheet input, the rendered report, and the optional review document.
+- `multiqc/multiqc_report.html`: an audit report covering inputs, checksums, outputs, parameters, software versions, and the report runtime.
+- `pipeline_info/manifest_<timestamp>.bco.json` and `ro-crate-metadata.json`: BCO and Workflow Run RO-Crate provenance.
+- `pipeline_info/`: Nextflow execution reports, trace, DAG, parameters, and collected software versions.
+- The original review or sign-off file at the results root when `--document` is provided.
+
+For the complete directory layout and guidance on interpreting each file, see the [output documentation](https://nf-co.re/provenancereport/output).
 
 ## Credits
 
@@ -82,7 +103,7 @@ nf-core/provenancereport was originally written by Alexander Peltzer, Gregor Stu
 
 We thank the following people for their extensive assistance in the development of this pipeline:
 
-<!-- TODO nf-core: If applicable, make list of people who have also contributed -->
+Antonia Saracco, Delfina Terradas, Anabella Trigila.
 
 ## Contributions and Support
 
@@ -95,7 +116,19 @@ For further information or help, don't hesitate to get in touch on the [Slack `#
 <!-- TODO nf-core: Add citation for pipeline after first release. Uncomment lines below and update Zenodo doi and badge at the top of this file. -->
 <!-- If you use nf-core/provenancereport for your analysis, please cite it using the following doi: [10.5281/zenodo.XXXXXX](https://doi.org/10.5281/zenodo.XXXXXX) -->
 
-<!-- TODO nf-core: Add bibliography of tools and data used in your pipeline -->
+Please cite the core reporting and provenance software used by the pipeline:
+
+> **Quarto.**
+>
+> J.J. Allaire, Charles Teague, Carlos Scheidegger, Yihui Xie, Christophe Dervieux & Gordon Woodhull.
+>
+> _Computer software._ [https://quarto.org/](https://quarto.org/).
+
+> **nf-prov: Nextflow plugin to render provenance reports for pipeline runs.**
+>
+> Nextflow.
+>
+> _Computer software_, version 1.7.0. [nextflow-io/nf-prov](https://github.com/nextflow-io/nf-prov/releases/tag/1.7.0).
 
 An extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.
 

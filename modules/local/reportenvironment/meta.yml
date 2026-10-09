@@ -1,0 +1,43 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/modules/meta-schema.json
+name: "reportenvironment"
+description: Collect runtime environment metadata for the generated report
+keywords:
+  - report
+  - provenance
+  - environment
+  - container
+tools:
+  - reportenvironment:
+      description: Collect the report process, container, R session information, and Python version
+      homepage: https://github.com/nf-core/provenancereport
+      documentation: https://nf-co.re/provenancereport
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - runtime_process:
+        type: map
+        description: |
+          Source process emitted by QUARTO_NOTEBOOK
+    - runtime_backend:
+        type: map
+        description: |
+          Runtime backend emitted by QUARTO_NOTEBOOK
+    - runtime_reference:
+        type: map
+        description: |
+          Runtime reference emitted by QUARTO_NOTEBOOK
+output:
+  multiqc_table:
+    - - runtime_environment_mqc.tsv:
+          type: file
+          description: MultiQC custom-data table describing the report runtime environment
+          pattern: "runtime_environment_mqc.tsv"
+  multiqc_r_session:
+    - - r_session_info_mqc.yaml:
+          type: file
+          description: MultiQC custom-content HTML section containing full R session information
+          pattern: "r_session_info_mqc.yaml"
+authors:
+  - "@antoniasaracco"
+maintainers:
+  - "@antoniasaracco"

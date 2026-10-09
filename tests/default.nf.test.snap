@@ -1,0 +1,189 @@
+{
+    "-profile test": {
+        "content": [
+            {
+                "MD5SUM": {
+                    "md5sum": "9.5"
+                },
+                "MULTIQC": {
+                    "multiqc": "1.35"
+                },
+                "QUARTO_NOTEBOOK": {
+                    "R": "4.4.3",
+                    "cli": "3.6.5",
+                    "compiler": "4.4.3",
+                    "datasets": "4.4.3",
+                    "digest": "0.6.37",
+                    "evaluate": "1.0.3",
+                    "fastmap": "1.2.0",
+                    "grDevices": "4.4.3",
+                    "graphics": "4.4.3",
+                    "htmltools": "0.5.8.1",
+                    "jsonlite": "2.0.0",
+                    "knitr": "1.50",
+                    "methods": "4.4.3",
+                    "papermill": "2.6.0",
+                    "quarto": "1.7.31",
+                    "rlang": "1.1.6",
+                    "rmarkdown": "2.29",
+                    "stats": "4.4.3",
+                    "tools": "4.4.3",
+                    "utils": "4.4.3",
+                    "xfun": "0.52",
+                    "yaml": "2.3.10"
+                },
+                "QUARTO_PREPARE": {
+                    "python": "3.12.11",
+                    "pyyaml": "6.0.2"
+                },
+                "Workflow": {
+                    "nf-core/provenancereport": "v1.0.0"
+                }
+            },
+            [
+                "README.md:md5,a7ba1823957aba61b7c6036e6aeab137",
+                "artifacts.csv",
+                "main.nf:md5,8f618bf1043edcc8ed21af03c12ee53c",
+                "md5sum",
+                "md5sum/provenancereport.md5",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_file_checksums_table.txt",
+                "multiqc/multiqc_data/multiqc_input_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_pipeline_outputs.txt",
+                "multiqc/multiqc_data/multiqc_runtime_environment.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "multiqc_report.csv",
+                "nextflow.config:md5,86567217d8527a2d1544c3d9e8c09806",
+                "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
+                "notebook.csv",
+                "pipeline_info",
+                "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
+                "quartonotebook",
+                "quartonotebook/artifacts",
+                "quartonotebook/artifacts/provenance_report_input_files.tsv",
+                "quartonotebook/artifacts/provenance_report_summary.txt",
+                "quartonotebook/prepared_provenance_report.qmd",
+                "quartonotebook/provenance_report.html",
+                "reports.csv",
+                "samplesheet.csv"
+            ],
+            [
+                "README.md:md5,a7ba1823957aba61b7c6036e6aeab137",
+                "main.nf:md5,8f618bf1043edcc8ed21af03c12ee53c",
+                "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
+                "provenance_report_input_files.tsv:md5,1458dc07273f8a570beae2b5f4358a49",
+                "provenance_report_summary.txt:md5,b32c187edd9b5ec9c088a0d2a41ff01d",
+                "prepared_provenance_report.qmd:md5,52715f44d9355b3a8eb358113dfc02a5",
+                "samplesheet.csv:md5,760077fbeb3954e468d83244325f4ade"
+            ]
+        ],
+        "timestamp": "2026-10-08T17:41:46.160151316",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    },
+    "-profile test with --document": {
+        "content": [
+            {
+                "MD5SUM": {
+                    "md5sum": "9.5"
+                },
+                "MULTIQC": {
+                    "multiqc": "1.35"
+                },
+                "QUARTO_NOTEBOOK": {
+                    "R": "4.4.3",
+                    "cli": "3.6.5",
+                    "compiler": "4.4.3",
+                    "datasets": "4.4.3",
+                    "digest": "0.6.37",
+                    "evaluate": "1.0.3",
+                    "fastmap": "1.2.0",
+                    "grDevices": "4.4.3",
+                    "graphics": "4.4.3",
+                    "htmltools": "0.5.8.1",
+                    "jsonlite": "2.0.0",
+                    "knitr": "1.50",
+                    "methods": "4.4.3",
+                    "papermill": "2.6.0",
+                    "quarto": "1.7.31",
+                    "rlang": "1.1.6",
+                    "rmarkdown": "2.29",
+                    "stats": "4.4.3",
+                    "tools": "4.4.3",
+                    "utils": "4.4.3",
+                    "xfun": "0.52",
+                    "yaml": "2.3.10"
+                },
+                "QUARTO_PREPARE": {
+                    "python": "3.12.11",
+                    "pyyaml": "6.0.2"
+                },
+                "Workflow": {
+                    "nf-core/provenancereport": "v1.0.0"
+                }
+            },
+            [
+                "README.md:md5,a7ba1823957aba61b7c6036e6aeab137",
+                "artifacts.csv",
+                "document.csv",
+                "main.nf:md5,8f618bf1043edcc8ed21af03c12ee53c",
+                "md5sum",
+                "md5sum/provenancereport.md5",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_file_checksums_table.txt",
+                "multiqc/multiqc_data/multiqc_input_samplesheet.txt",
+                "multiqc/multiqc_data/multiqc_pipeline_outputs.txt",
+                "multiqc/multiqc_data/multiqc_runtime_environment.txt",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "multiqc_report.csv",
+                "nextflow.config:md5,86567217d8527a2d1544c3d9e8c09806",
+                "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
+                "notebook.csv",
+                "pipeline_info",
+                "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
+                "quartonotebook",
+                "quartonotebook/artifacts",
+                "quartonotebook/artifacts/provenance_report_input_files.tsv",
+                "quartonotebook/artifacts/provenance_report_summary.txt",
+                "quartonotebook/prepared_provenance_report.qmd",
+                "quartonotebook/provenance_report.html",
+                "reports.csv",
+                "review_signoff.md",
+                "samplesheet.csv"
+            ],
+            [
+                "README.md:md5,a7ba1823957aba61b7c6036e6aeab137",
+                "main.nf:md5,8f618bf1043edcc8ed21af03c12ee53c",
+                "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
+                "provenance_report_input_files.tsv:md5,1458dc07273f8a570beae2b5f4358a49",
+                "provenance_report_summary.txt:md5,b32c187edd9b5ec9c088a0d2a41ff01d",
+                "prepared_provenance_report.qmd:md5,52715f44d9355b3a8eb358113dfc02a5",
+                "review_signoff.md:md5,0662c5a0325d10cdcd542d83dc2d300b",
+                "samplesheet.csv:md5,760077fbeb3954e468d83244325f4ade"
+            ]
+        ],
+        "timestamp": "2026-10-08T17:42:19.996738702",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "25.10.4"
+        }
+    }
+}

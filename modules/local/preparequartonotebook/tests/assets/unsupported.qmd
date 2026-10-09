@@ -1,0 +1,8 @@
+---
+title: Unsupported notebook
+engine: markdown
+---
+
+```{bash}
+echo "No supported execution engine"
+```

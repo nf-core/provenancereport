@@ -14,11 +14,29 @@ nextflow_pipeline {
 
         then {
             // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
-            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json'])
             // stable_content: All files in ${params.outdir}/ with stable content
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def document_index = path("$outputDir/document.csv")
+            def reports_index = path("$outputDir/reports.csv")
+            def notebook_index = path("$outputDir/notebook.csv")
+            def ro_crate = path("$outputDir/ro-crate-metadata.json")
             assert workflow.success
             assertAll(
+                { assert stable_path.findAll { path -> path.startsWith("quartonotebook/") && path.endsWith(".html") }.size() == 1 },
+                { assert !document_index.exists() },
+                { assert reports_index.exists() },
+                { assert reports_index.text.contains('quartonotebook/provenance_report.html') },
+                { assert notebook_index.exists() },
+                { assert notebook_index.text.contains('quartonotebook/prepared_provenance_report.qmd') },
+                { assert ro_crate.exists() },
+                { assert [
+                    'quartonotebook/provenance_report.html',
+                    'quartonotebook/prepared_provenance_report.qmd',
+                    'quartonotebook/artifacts/provenance_report_input_files.tsv',
+                    'md5sum/provenancereport.md5',
+                    'multiqc/multiqc_report.html',
+                ].every { output -> ro_crate.text.contains(output) } },
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
@@ -27,6 +45,51 @@ nextflow_pipeline {
                     // All files with stable contents
                     stable_content
                 ).match() }
+            )
+        }
+    }
+
+    test("-profile test with --document") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                document = "${projectDir}/tests/assets/review_signoff.md"
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def multiqc_report = path("$outputDir/multiqc/multiqc_report.html")
+            def checksum_file = path("$outputDir/md5sum/provenancereport.md5")
+            def document_index = path("$outputDir/document.csv")
+            def reports_index = path("$outputDir/reports.csv")
+            def notebook_index = path("$outputDir/notebook.csv")
+            def ro_crate = path("$outputDir/ro-crate-metadata.json")
+            assert workflow.success
+            assertAll(
+                { assert stable_path.findAll { path -> path.startsWith("quartonotebook/") && path.endsWith(".html") }.size() == 1 },
+                { assert document_index.exists() },
+                { assert document_index.text.contains('review_signoff.md') },
+                { assert reports_index.exists() },
+                { assert reports_index.text.contains('quartonotebook/provenance_report.html') },
+                { assert notebook_index.exists() },
+                { assert notebook_index.text.contains('quartonotebook/prepared_provenance_report.qmd') },
+                { assert ro_crate.exists() },
+                { assert ro_crate.text.contains('review_signoff.md') },
+                { assert checksum_file.text.contains('0662c5a0325d10cdcd542d83dc2d300b  review_signoff.md') },
+                { assert snapshot(
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() },
+                { assert multiqc_report.text.contains('review_signoff.md') },
             )
         }
     }

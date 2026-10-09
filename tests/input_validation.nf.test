@@ -1,0 +1,59 @@
+nextflow_pipeline {
+
+    name "Test input validation"
+    script "../main.nf"
+    tag "pipeline"
+    tag "validation"
+    profile "test"
+
+    test("reject duplicate input IDs") {
+
+        when {
+            params {
+                input = "${projectDir}/tests/assets/samplesheet_duplicate_ids.csv"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert (workflow.stdout + workflow.stderr).any { line -> line.contains("Detected duplicate entries: [id:duplicate]") } },
+            )
+        }
+    }
+
+    test("reject duplicate input basenames") {
+
+        when {
+            params {
+                input = "${projectDir}/tests/assets/samplesheet_duplicate_basenames.csv"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert (workflow.stdout + workflow.stderr).any { line -> line.contains("Duplicate basenames: counts.tsv") } },
+            )
+        }
+    }
+
+    test("reject commas in input paths") {
+
+        when {
+            params {
+                input = "${projectDir}/tests/assets/samplesheet_comma_path.csv"
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            assertAll(
+                { assert workflow.failed },
+                { assert (workflow.stdout + workflow.stderr).any { line -> line.contains("cannot contain spaces or comma-separated values") } },
+            )
+        }
+    }
+}

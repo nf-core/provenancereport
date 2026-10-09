@@ -1,0 +1,3 @@
+id,path
+duplicate,https://raw.githubusercontent.com/nf-core/test-datasets/differentialabundance/modules_testdata/variancepartition_dream/counts.tsv
+duplicate,https://raw.githubusercontent.com/nf-core/test-datasets/differentialabundance/modules_testdata/variancepartition_dream/metadata.tsv
