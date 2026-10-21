@@ -1,0 +1,14 @@
+id: "nf-core-provenancereport-methods-description"
+section_name: "Pipeline Execution"
+plot_type: "html"
+data: |
+  <p>
+    The input samplesheet was validated and its files were staged by
+    <code>nf-core/provenancereport</code> v${workflow.manifest.version}. The selected
+    Quarto notebook was rendered once with all staged inputs. MultiQC then collated the
+    workflow parameters, software versions, and runtime environment.
+  </p>
+  <h4>Execution command</h4>
+  <pre><code>${workflow.commandLine}</code></pre>
+  <h4>Workflow engine</h4>
+  <p>Nextflow v${workflow.nextflow.version}</p>
