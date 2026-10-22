@@ -81,7 +81,6 @@
                 "multiqc/multiqc_data/multiqc_sources.txt",
                 "multiqc/multiqc_report.html",
                 "multiqc_report.csv",
-                "nextflow.config:md5,86567217d8527a2d1544c3d9e8c09806",
                 "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
                 "notebook.csv",
                 "pipeline_info",
@@ -103,7 +102,7 @@
                 "samplesheet_rds.csv:md5,0fe3beaa1e0944acf1674c7e0e91004f"
             ]
         ],
-        "timestamp": "2026-10-14T18:40:35.553439416",
+        "timestamp": "2026-10-22T18:35:22.136808856",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
