@@ -1,0 +1,119 @@
+nextflow_process {
+
+    name "Test Process REPORTENVIRONMENT"
+    script "../main.nf"
+    process "REPORTENVIRONMENT"
+
+    tag "modules"
+    tag "modules_local"
+    tag "reportenvironment"
+
+    test("collect report runtime environment - container") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'QUARTO_NOTEBOOK',
+                    'docker',
+                    'community.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665'
+                ]
+                """
+            }
+        }
+
+        then {
+            def runtime_table = path(process.out.multiqc_table.first()).text
+            def r_session_info = path(process.out.multiqc_r_session.first()).text
+            def normalized_runtime_table = runtime_table
+                .replaceAll(/(?m)^Container engine\t.*$/, 'Container engine\t<ENGINE>')
+                .replaceAll(/(?m)^Python\t.*$/, 'Python\t<VERSION>')
+            def normalized_r_session_info = r_session_info.replaceAll(
+                /(?s)(data: \|\n  <pre[^\n]*>\n).*?(\n  <\/pre>)/,
+                '$1  <R_SESSION_INFO>$2'
+            )
+            assertAll(
+                { assert process.success },
+                { assert runtime_table.contains('Runtime source process\tQUARTO_NOTEBOOK') },
+                { assert runtime_table.contains('Runtime backend\tdocker') },
+                { assert runtime_table.contains('Runtime reference\tcommunity.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665') },
+                { assert r_session_info.contains('R version') || r_session_info.contains('Not available') },
+                { assert normalized_r_session_info.contains('<R_SESSION_INFO>') },
+                { assert snapshot(normalized_runtime_table, normalized_r_session_info).match() },
+            )
+        }
+    }
+
+    test("collect report runtime environment - conda") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'QUARTONOTEBOOK',
+                    'conda',
+                    "${projectDir}/modules/local/reportenvironment/tests/assets/environment.yml"
+                ]
+                """
+            }
+        }
+
+        then {
+            def runtime_table = path(process.out.multiqc_table.first()).text
+            def r_session_info = path(process.out.multiqc_r_session.first()).text
+            def normalized_runtime_table = runtime_table
+                .replace("${projectDir}", '<PROJECT_DIR>')
+                .replaceAll(/(?m)^Container engine\t.*$/, 'Container engine\t<ENGINE>')
+                .replaceAll(/(?m)^Python\t.*$/, 'Python\t<VERSION>')
+            def normalized_r_session_info = r_session_info.replaceAll(
+                /(?s)(data: \|\n  <pre[^\n]*>\n).*?(\n  <\/pre>)/,
+                '$1  <R_SESSION_INFO>$2'
+            )
+            assertAll(
+                { assert process.success },
+                { assert runtime_table.contains('Runtime source process\tQUARTONOTEBOOK') },
+                { assert runtime_table.contains('Runtime backend\tconda') },
+                { assert runtime_table.contains("Runtime reference\t${projectDir}/modules/local/reportenvironment/tests/assets/environment.yml") },
+                { assert r_session_info.contains('R version') || r_session_info.contains('Not available') },
+                { assert normalized_r_session_info.contains('<R_SESSION_INFO>') },
+                { assert snapshot(normalized_runtime_table, normalized_r_session_info).match() },
+            )
+        }
+    }
+
+    test("collect report runtime environment - none") {
+
+        when {
+            process {
+                """
+                input[0] = [
+                    'QUARTONOTEBOOK',
+                    'none',
+                    'Not configured'
+                ]
+                """
+            }
+        }
+
+        then {
+            def runtime_table = path(process.out.multiqc_table.first()).text
+            def r_session_info = path(process.out.multiqc_r_session.first()).text
+            def normalized_runtime_table = runtime_table
+                .replaceAll(/(?m)^Container engine\t.*$/, 'Container engine\t<ENGINE>')
+                .replaceAll(/(?m)^Python\t.*$/, 'Python\t<VERSION>')
+            def normalized_r_session_info = r_session_info.replaceAll(
+                /(?s)(data: \|\n  <pre[^\n]*>\n).*?(\n  <\/pre>)/,
+                '$1  <R_SESSION_INFO>$2'
+            )
+            assertAll(
+                { assert process.success },
+                { assert runtime_table.contains('Runtime source process\tQUARTONOTEBOOK') },
+                { assert runtime_table.contains('Runtime backend\tnone') },
+                { assert runtime_table.contains('Runtime reference\tNot configured') },
+                { assert r_session_info.contains('R version') || r_session_info.contains('Not available') },
+                { assert normalized_r_session_info.contains('<R_SESSION_INFO>') },
+                { assert snapshot(normalized_runtime_table, normalized_r_session_info).match() },
+            )
+        }
+    }
+}
