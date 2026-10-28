@@ -1,0 +1,37 @@
+nextflow_pipeline {
+
+    name "Test pipeline with external RDS input"
+    script "../main.nf"
+    config "tests/assets/quartonotebook_rds.config"
+    tag "pipeline"
+    tag "rds"
+
+    test("-profile test with external RDS input") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+            }
+        }
+
+        then {
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json', 'README.md', 'docs/**'])
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def source_notebook = path("$outputDir/quartonotebook/external_rds_report.qmd")
+            def notebook_index = path("$outputDir/notebook.csv")
+            def checksum_file = path("$outputDir/md5sum/provenancereport.md5")
+            assert workflow.success
+            assertAll(
+                { assert source_notebook.md5 == path("${projectDir}/tests/assets/external_rds_report.qmd").md5 },
+                { assert notebook_index.text.contains('quartonotebook/external_rds_report.qmd') },
+                { assert notebook_index.text.contains('quartonotebook/prepared_external_rds_report.qmd') },
+                { assert checksum_file.text.contains("${source_notebook.md5}  external_rds_report.qmd") },
+                { assert snapshot(
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
+                    stable_path,
+                    stable_content
+                ).match() },
+            )
+        }
+    }
+}
