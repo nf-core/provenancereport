@@ -1,0 +1,68 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/nf-core/modules/master/subworkflows/yaml-schema.json
+name: "PIPELINE_INITIALISATION"
+description: Initialise and complete nf-core/provenancereport pipeline runs
+keywords:
+  - utility
+  - pipeline
+  - initialise
+  - completion
+components:
+  - completionemail
+  - completionsummary
+  - utils_nfschema_plugin
+  - utils_nfcore_pipeline
+  - utils_nextflow_pipeline
+input:
+  - version:
+      type: boolean
+      description: Display the pipeline version and exit
+  - validate_params:
+      type: boolean
+      description: Validate pipeline parameters against the Nextflow schema
+  - monochrome_logs:
+      type: boolean
+      description: Disable ANSI colours in log output
+  - nextflow_cli_args:
+      type: list
+      description: Nextflow positional command-line arguments
+  - outdir:
+      type: directory
+      description: Directory where pipeline results are published
+  - input:
+      type: file
+      description: Input samplesheet
+      pattern: "*.csv"
+  - help:
+      type: boolean
+      description: Display the pipeline help message and exit
+  - help_full:
+      type: boolean
+      description: Display the extended pipeline help message
+  - show_hidden:
+      type: boolean
+      description: Include hidden parameters in the help message
+  - email:
+      type: string
+      description: Email address for the completion notification
+  - email_on_fail:
+      type: string
+      description: Email address for the failure notification
+  - plaintext_email:
+      type: boolean
+      description: Send plain-text email instead of HTML
+  - multiqc_report:
+      type: file
+      description: MultiQC report attached to completion emails
+      pattern: "*.html"
+output:
+  - samplesheet:
+      type: list
+      description: Channel of metadata maps and validated input files
+  - versions:
+      type: file
+      description: Channel containing software version information
+      pattern: "versions.yml"
+authors:
+  - "@atrigila"
+  - "@delfiterradas"
+  - "@antoniasaracco"

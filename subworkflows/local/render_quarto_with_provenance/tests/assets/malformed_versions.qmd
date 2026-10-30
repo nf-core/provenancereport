@@ -1,0 +1,13 @@
+---
+title: Malformed versions
+format: html
+engine: knitr
+params:
+  meta: NULL
+  artifact_dir: NULL
+  cpus: 1
+---
+
+```{r}
+writeLines("missing-version,", "versions.csv")
+```

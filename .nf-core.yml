@@ -26,8 +26,8 @@ template:
   name: provenancereport
   org: nf-core
   outdir: .
+  version: 1.0.1
   skip_features:
     - igenomes
     - fastqc
     - gpu
-  version: 1.0.0

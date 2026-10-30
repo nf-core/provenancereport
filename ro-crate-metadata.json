@@ -23,6 +23,9 @@
                     "@id": "assets/"
                 },
                 {
+                    "@id": "bin/"
+                },
+                {
                     "@id": "conf/"
                 },
                 {
@@ -131,8 +134,8 @@
             "sdPublisher": {
                 "@id": "https://nf-co.re/"
             },
-            "url": ["https://github.com/nf-core/provenancereport", "https://nf-co.re/provenancereport/1.0.0/"],
-            "version": ["1.0.0"]
+            "url": ["https://github.com/nf-core/provenancereport", "https://nf-co.re/provenancereport/1.0.1/"],
+            "version": ["1.0.1"]
         },
         {
             "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow",
@@ -193,6 +196,11 @@
             "@id": "assets/",
             "@type": "Dataset",
             "description": "Additional files"
+        },
+        {
+            "@id": "bin/",
+            "@type": "Dataset",
+            "description": "Scripts that must be callable from a pipeline process"
         },
         {
             "@id": "conf/",
@@ -303,17 +311,48 @@
         {
             "@id": "https://orcid.org/0000-0002-6503-2180",
             "@type": "Person",
-            "name": "Alexander Peltzer"
+            "affiliation": "Boehringer Ingelheim",
+            "email": "apeltzer@users.noreply.github.com",
+            "name": "Alexander Peltzer",
+            "url": "https://github.com/apeltzer"
         },
         {
             "@id": "https://orcid.org/0000-0001-9584-7842",
             "@type": "Person",
-            "name": "Gregor Sturm"
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Gregor Sturm",
+            "url": "https://github.com/grst"
         },
         {
-            "@id": "#f374b9c0-63b4-4378-8873-bc67a27cc5b8",
+            "@id": "#43843cb4-05e9-43aa-8aed-7c9a6aed5afa",
             "@type": "Person",
-            "name": "Julian Schwab"
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Julian Schwab",
+            "url": "https://github.com/julianSchwab"
+        },
+        {
+            "@id": "#38b51c17-85d9-46ff-b3fb-0216f5109bf3",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "204903529+antoniasaracco@users.noreply.github.com",
+            "name": "Antonia Saracco",
+            "url": "https://github.com/antoniasaracco"
+        },
+        {
+            "@id": "#6d405681-ffd4-4a92-a4a8-140f5bb959b3",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "155591053+delfiterradas@users.noreply.github.com",
+            "name": "Delfina Terradas",
+            "url": "https://github.com/delfiterradas"
+        },
+        {
+            "@id": "https://orcid.org/0000-0001-6755-9763",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "18577080+atrigila@users.noreply.github.com",
+            "name": "Anabella Trigila",
+            "url": "https://github.com/atrigila"
         }
     ]
 }

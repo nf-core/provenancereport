@@ -1,0 +1,47 @@
+nextflow_pipeline {
+
+    name "Test pipeline with custom quarto notebook"
+    script "../main.nf"
+    config "tests/assets/quartonotebook.config"
+    tag "pipeline"
+
+    test("-profile test with custom notebook") {
+
+        when {
+            params {
+                outdir = "$outputDir"
+                input = "${projectDir}/tests/assets/samplesheet_quartonotebook.csv"
+                notebook = "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/generic/notebooks/quarto/quarto_r.qmd"
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json', 'README.md', 'docs/**', 'nextflow.config'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            def source_notebook = path("$outputDir/quartonotebook/quarto_r.qmd")
+            def prepared_notebook = path("$outputDir/quartonotebook/prepared_quarto_r.qmd")
+            def notebook_index = path("$outputDir/notebook.csv")
+            def checksum_file = path("$outputDir/md5sum/provenancereport.md5")
+            assert workflow.success
+            assertAll(
+                { assert stable_path.findAll { path -> path.startsWith("quartonotebook/") && path.endsWith(".html") }.size() == 1 },
+                { assert source_notebook.exists() },
+                { assert prepared_notebook.exists() },
+                { assert source_notebook.md5 != prepared_notebook.md5 },
+                { assert notebook_index.text.contains('quartonotebook/quarto_r.qmd') },
+                { assert notebook_index.text.contains('quartonotebook/prepared_quarto_r.qmd') },
+                { assert checksum_file.text.contains("${source_notebook.md5}  quarto_r.qmd") },
+                { assert snapshot(
+                    // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
+                    removeNextflowVersion("$outputDir/pipeline_info/nf_core_provenancereport_software_mqc_versions.yml"),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() },
+            )
+        }
+    }
+}
