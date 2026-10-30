@@ -1,30 +1,9 @@
-repository_type: pipeline
-
-nf_core_version: 4.1.0
-
-template:
-  author: Alexander Peltzer, Gregor Sturm, Julian Schwab
-  description: Generate reproducible Quarto reports together with an audit trail of inputs, checksums, software versions, runtime environments, and provenance metadata.
-  force: false
-  is_nfcore: true
-  name: provenancereport
-  org: nf-core
-  outdir: .
-  version: 1.0.0
-  skip_features:
-    - igenomes
-    - fastqc
-    - gpu
-
 lint:
-  nf_test_content:
-    - tests/input_validation.nf.test
   files_exist:
     - assets/multiqc_config.yml
     - .github/workflows/linting_comment.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
-  multiqc_config: false
   files_unchanged:
     - assets/sendmail_template.txt
     - .github/workflows/branch.yml
@@ -33,3 +12,22 @@ lint:
     - docs/images/nf-core-provenancereport_logo_dark.png
     - docs/images/nf-core-provenancereport_logo_light.png
     - assets/nf-core-provenancereport_logo_light.png
+  multiqc_config: false
+  nf_test_content:
+    - tests/input_validation.nf.test
+nf_core_version: 4.2.1
+repository_type: pipeline
+template:
+  author: Alexander Peltzer, Gregor Sturm, Julian Schwab
+  description: Generate reproducible Quarto reports together with an audit trail of
+    inputs, checksums, software versions, runtime environments, and provenance metadata.
+  force: false
+  is_nfcore: true
+  name: provenancereport
+  org: nf-core
+  outdir: .
+  version: 1.0.1
+  skip_features:
+    - igenomes
+    - fastqc
+    - gpu
