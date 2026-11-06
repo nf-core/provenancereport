@@ -10,6 +10,10 @@
 
 ## Pipeline tools
 
+- [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
+
+> Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-8. doi: 10.1093/bioinformatics/btw354. Epub 2016 Jun 16. PubMed PMID: 27312411; PubMed Central PMCID: PMC5039924.
+
 - [Quarto](https://quarto.org/)
 
   > Allaire JJ, Teague C, Scheidegger C, Xie Y, Dervieux C, Woodhull G. Quarto. Computer software. https://quarto.org/.
@@ -17,10 +21,6 @@
 - [nf-prov](https://github.com/nextflow-io/nf-prov/releases/tag/1.7.0)
 
   > Nextflow. nf-prov: Nextflow plugin to render provenance reports for pipeline runs. Computer software. Version 1.7.0.
-
-- [MultiQC](https://pubmed.ncbi.nlm.nih.gov/27312411/)
-
-  > Ewels P, Magnusson M, Lundin S, Käller M. MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics. 2016 Oct 1;32(19):3047-3048. doi: 10.1093/bioinformatics/btw354. PubMed PMID: 27312411.
 
 ## Software packaging/containerisation tools
 
