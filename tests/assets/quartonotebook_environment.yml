@@ -1,0 +1,23 @@
+---
+# Source environment for the pinned QUARTO_NOTEBOOK test container and lock file.
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - conda-forge::jupyter=1.1.1
+  - conda-forge::matplotlib=3.10.3
+  - conda-forge::papermill=2.6.0
+  - conda-forge::python=3.12.11
+  - conda-forge::quarto=1.7.31
+  - conda-forge::r-base=4.4.3
+  - conda-forge::r-cli=3.6.5
+  - conda-forge::r-digest=0.6.37
+  - conda-forge::r-evaluate=1.0.3
+  - conda-forge::r-fastmap=1.2.0
+  - conda-forge::r-htmltools=0.5.8.1
+  - conda-forge::r-jsonlite=2.0.0
+  - conda-forge::r-knitr=1.50
+  - conda-forge::r-rlang=1.1.6
+  - conda-forge::r-rmarkdown=2.29
+  - conda-forge::r-xfun=0.52
+  - conda-forge::r-yaml=2.3.10

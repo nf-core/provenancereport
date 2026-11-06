@@ -1,0 +1,9 @@
+---
+title: Runtime R package capture
+engine: knitr
+---
+
+```{r}
+package_name <- "stats"
+do.call("library", list(package = package_name))
+```

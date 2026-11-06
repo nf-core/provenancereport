@@ -1,0 +1,13 @@
+---
+title: Explicit versions
+format: html
+engine: knitr
+params:
+  meta: NULL
+  artifact_dir: NULL
+  cpus: 1
+---
+
+```{r}
+writeLines("curated-package,1.50", "versions.csv")
+```

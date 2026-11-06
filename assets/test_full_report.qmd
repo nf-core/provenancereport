@@ -1,0 +1,75 @@
+---
+title: "Full test report"
+format:
+  html:
+    embed-resources: true
+params:
+  meta: NULL
+  input_dir: ./
+  input_filename: NULL
+  artifact_dir: NULL
+  cpus: 1
+---
+
+```{r setup}
+#| include: false
+split_param <- function(value) {
+    if (is.null(value) || !nzchar(value)) {
+        return(character())
+    }
+    strsplit(value, ",", fixed = TRUE)[[1]]
+}
+
+input_ids <- split_param(params$meta$input_ids)
+input_files <- split_param(params$meta$input_files)
+
+if (length(input_ids) != length(input_files)) {
+    stop("Input IDs and staged input files do not have matching lengths.")
+}
+
+required_inputs <- c("counts", "metadata")
+missing_inputs <- setdiff(required_inputs, input_ids)
+if (length(missing_inputs) > 0) {
+    stop("Missing required input IDs: ", paste(missing_inputs, collapse = ", "))
+}
+
+input_paths <- setNames(file.path(params$input_dir, input_files), input_ids)
+missing_files <- names(input_paths)[!file.exists(input_paths)]
+if (length(missing_files) > 0) {
+    stop("Staged files not found for input IDs: ", paste(missing_files, collapse = ", "))
+}
+
+counts <- read.delim(input_paths[["counts"]], check.names = FALSE)
+metadata <- read.delim(input_paths[["metadata"]], check.names = FALSE)
+
+sample_columns <- setdiff(names(counts), c("gene_id", "gene_name"))
+summary <- data.frame(
+    metric = c("Genes", "Count samples", "Metadata samples", "Matched samples"),
+    value = c(
+        nrow(counts),
+        length(sample_columns),
+        nrow(metadata),
+        sum(sample_columns %in% metadata$sample)
+    )
+)
+
+artifact_dir <- params$artifact_dir
+if (is.null(artifact_dir) || !nzchar(artifact_dir)) {
+    artifact_dir <- "artifacts"
+}
+dir.create(artifact_dir, showWarnings = FALSE, recursive = TRUE)
+write.table(
+    summary,
+    file = file.path(artifact_dir, "test_full_summary.tsv"),
+    sep = "\t",
+    quote = FALSE,
+    row.names = FALSE
+)
+```
+
+This report exercises a user-provided notebook with all files from the standard test samplesheet.
+
+```{r summary}
+#| echo: false
+knitr::kable(summary, col.names = c("Metric", "Value"))
+```

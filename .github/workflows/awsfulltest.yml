@@ -36,7 +36,8 @@ jobs:
           nextflow_config: |
             plugins {
               id 'nf-slack@0.5.0'
-              id 'nf-schema@2.7.2'
+              id 'nf-schema@2.7.3'
+              id 'nf-prov@1.7.0'
             }
             slack {
               enabled = true
