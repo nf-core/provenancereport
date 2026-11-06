@@ -18,4 +18,3 @@ multiqc_report.csv
 document.csv
 reports.csv
 notebook.csv
-nextflow.config
