@@ -57,7 +57,7 @@
                     "pyyaml": "6.0.2"
                 },
                 "Workflow": {
-                    "nf-core/provenancereport": "v1.0.1"
+                    "nf-core/provenancereport": "v1.0.2dev"
                 }
             },
             [
@@ -102,10 +102,10 @@
                 "samplesheet_rds.csv:md5,0fe3beaa1e0944acf1674c7e0e91004f"
             ]
         ],
-        "timestamp": "2026-10-29T21:28:20.425351335",
+        "timestamp": "2026-11-10T19:57:19.934887067",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "25.10.4"
+            "nextflow": "26.04.0"
         }
     }
 }
