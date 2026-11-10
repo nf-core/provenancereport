@@ -100,7 +100,7 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        NFCORE_PROVENANCEREPORT.out.multiqc_report,
+        NFCORE_PROVENANCEREPORT.out.multiqc_report
     )
 
     publish:

@@ -15,7 +15,7 @@ nextflow_pipeline {
         }
 
         then {
-            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json', 'README.md', 'docs/**'])
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'ro-crate-metadata.json', 'README.md', 'docs/**', 'nextflow.config'])
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             def source_notebook = path("$outputDir/quartonotebook/external_rds_report.qmd")
             def notebook_index = path("$outputDir/notebook.csv")

@@ -57,13 +57,13 @@
                     "pyyaml": "6.0.2"
                 },
                 "Workflow": {
-                    "nf-core/provenancereport": "v1.0.0"
+                    "nf-core/provenancereport": "v1.0.1"
                 }
             },
             [
                 "artifacts.csv",
                 "external_rds_report.qmd",
-                "main.nf:md5,8f618bf1043edcc8ed21af03c12ee53c",
+                "main.nf:md5,95dce721de761310d4e5a2c4fc776599",
                 "md5sum",
                 "md5sum/provenancereport.md5",
                 "multiqc",
@@ -81,8 +81,7 @@
                 "multiqc/multiqc_data/multiqc_sources.txt",
                 "multiqc/multiqc_report.html",
                 "multiqc_report.csv",
-                "nextflow.config:md5,86567217d8527a2d1544c3d9e8c09806",
-                "nextflow_schema.json:md5,bc89173cc2365b719dbdb0fc249be636",
+                "nextflow_schema.json:md5,accce6747a2f6166f963b35dab6e8de5",
                 "notebook.csv",
                 "pipeline_info",
                 "pipeline_info/nf_core_provenancereport_software_mqc_versions.yml",
@@ -97,13 +96,13 @@
             ],
             [
                 "external_rds_report.qmd:md5,33c6e034d026f8d8d619711bec521665",
-                "external_rds_summary.tsv:md5,26d3aee09ee5b92e17f0dce912a750aa",
+                "external_rds_summary.tsv:md5,784ac7bb87ee69050fa395264747c345",
                 "external_rds_report.qmd:md5,33c6e034d026f8d8d619711bec521665",
                 "prepared_external_rds_report.qmd:md5,789454baa34f90129e2c9308c5efdcba",
                 "samplesheet_rds.csv:md5,0fe3beaa1e0944acf1674c7e0e91004f"
             ]
         ],
-        "timestamp": "2026-10-14T18:40:35.553439416",
+        "timestamp": "2026-10-29T21:28:20.425351335",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "25.10.4"
