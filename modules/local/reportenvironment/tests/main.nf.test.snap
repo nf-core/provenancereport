@@ -1,0 +1,35 @@
+{
+    "collect report runtime environment - none": {
+        "content": [
+            "field\tvalue\nProcess\tREPORTENVIRONMENT\nRuntime source process\tQUARTONOTEBOOK\nRuntime backend\tnone\nRuntime reference\tNot configured\nContainer engine\t<ENGINE>\nPython\t<VERSION>\n",
+            "id: 'nf-core-provenancereport-r-session-info'\ndescription: 'Full R sessionInfo() output from the report rendering environment.'\nsection_name: 'R sessionInfo()'\nplot_type: 'html'\ndata: |\n  <pre style=\"white-space: pre-wrap; overflow-x: auto; max-height: 32rem;\">\n  <R_SESSION_INFO>\n  </pre>\n"
+        ],
+        "timestamp": "2026-08-26T20:51:36.422137565",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "collect report runtime environment - container": {
+        "content": [
+            "field\tvalue\nProcess\tREPORTENVIRONMENT\nRuntime source process\tQUARTO_NOTEBOOK\nRuntime backend\tdocker\nRuntime reference\tcommunity.wave.seqera.io/library/jupyter_matplotlib_papermill_quarto_r-rmarkdown:6d15193ce3dfc665\nContainer engine\t<ENGINE>\nPython\t<VERSION>\n",
+            "id: 'nf-core-provenancereport-r-session-info'\ndescription: 'Full R sessionInfo() output from the report rendering environment.'\nsection_name: 'R sessionInfo()'\nplot_type: 'html'\ndata: |\n  <pre style=\"white-space: pre-wrap; overflow-x: auto; max-height: 32rem;\">\n  <R_SESSION_INFO>\n  </pre>\n"
+        ],
+        "timestamp": "2026-08-26T20:51:20.558085891",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    },
+    "collect report runtime environment - conda": {
+        "content": [
+            "field\tvalue\nProcess\tREPORTENVIRONMENT\nRuntime source process\tQUARTONOTEBOOK\nRuntime backend\tconda\nRuntime reference\t<PROJECT_DIR>/modules/local/reportenvironment/tests/assets/environment.yml\nContainer engine\t<ENGINE>\nPython\t<VERSION>\n",
+            "id: 'nf-core-provenancereport-r-session-info'\ndescription: 'Full R sessionInfo() output from the report rendering environment.'\nsection_name: 'R sessionInfo()'\nplot_type: 'html'\ndata: |\n  <pre style=\"white-space: pre-wrap; overflow-x: auto; max-height: 32rem;\">\n  <R_SESSION_INFO>\n  </pre>\n"
+        ],
+        "timestamp": "2026-08-26T20:51:28.491881966",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
+    }
+}

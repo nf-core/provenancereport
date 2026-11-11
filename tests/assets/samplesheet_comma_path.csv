@@ -1,0 +1,2 @@
+id,path
+comma,"s3://example-bucket/input,comma.txt"

@@ -1,0 +1,13 @@
+---
+title: Runtime Python package capture
+jupyter:
+  kernelspec:
+    name: python3
+    language: python
+---
+
+```{python}
+import importlib
+
+importlib.import_module("json")
+```
