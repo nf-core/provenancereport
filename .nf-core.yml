@@ -1,13 +1,9 @@
 lint:
   files_exist:
-    - assets/multiqc_config.yml
-    - .github/workflows/linting_comment.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
   files_unchanged:
     - assets/sendmail_template.txt
-    - .github/workflows/branch.yml
-    - .github/workflows/linting.yml
     - .github/PULL_REQUEST_TEMPLATE.md
     - docs/images/nf-core-provenancereport_logo_dark.png
     - docs/images/nf-core-provenancereport_logo_light.png
@@ -15,7 +11,7 @@ lint:
   multiqc_config: false
   nf_test_content:
     - tests/input_validation.nf.test
-nf_core_version: 4.2.1
+nf_core_version: 4.2.2
 repository_type: pipeline
 template:
   author: Alexander Peltzer, Gregor Sturm, Julian Schwab
@@ -30,4 +26,4 @@ template:
     - igenomes
     - fastqc
     - gpu
-  version: 1.0.0
+  version: 1.0.1
