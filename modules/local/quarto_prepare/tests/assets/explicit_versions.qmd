@@ -1,0 +1,10 @@
+---
+title: Explicit package versions
+engine: knitr
+---
+
+The report documents its `versions.csv` output here.
+
+```{r}
+writeLines("curated-package,1.2.3", "versions.csv")
+```

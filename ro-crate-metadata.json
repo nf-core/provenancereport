@@ -1,5 +1,22 @@
 {
-    "@context": ["https://w3id.org/ro/crate/1.3/context", "https://w3id.org/ro/terms/test"],
+    "@context": [
+        "https://w3id.org/ro/crate/1.2/context",
+        {
+            "GithubService": "https://w3id.org/ro/terms/test#GithubService",
+            "JenkinsService": "https://w3id.org/ro/terms/test#JenkinsService",
+            "PlanemoEngine": "https://w3id.org/ro/terms/test#PlanemoEngine",
+            "TestDefinition": "https://w3id.org/ro/terms/test#TestDefinition",
+            "TestInstance": "https://w3id.org/ro/terms/test#TestInstance",
+            "TestService": "https://w3id.org/ro/terms/test#TestService",
+            "TestSuite": "https://w3id.org/ro/terms/test#TestSuite",
+            "TravisService": "https://w3id.org/ro/terms/test#TravisService",
+            "definition": "https://w3id.org/ro/terms/test#definition",
+            "engineVersion": "https://w3id.org/ro/terms/test#engineVersion",
+            "instance": "https://w3id.org/ro/terms/test#instance",
+            "resource": "https://w3id.org/ro/terms/test#resource",
+            "runsOn": "https://w3id.org/ro/terms/test#runsOn"
+        }
+    ],
     "@graph": [
         {
             "@id": "./",
@@ -23,6 +40,9 @@
                     "@id": "assets/"
                 },
                 {
+                    "@id": "bin/"
+                },
+                {
                     "@id": "conf/"
                 },
                 {
@@ -33,6 +53,9 @@
                 },
                 {
                     "@id": "modules/"
+                },
+                {
+                    "@id": "modules/local/"
                 },
                 {
                     "@id": "modules/nf-core/"
@@ -101,14 +124,23 @@
             "about": {
                 "@id": "./"
             },
-            "conformsTo": {
-                "@id": "https://w3id.org/ro/crate/1.3"
-            }
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/ro/crate/1.2"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ]
         },
         {
             "@id": "main.nf",
-            "@type": ["File", "SoftwareSourceCode", "ComputationalWorkflow"],
-            "contributor": [
+            "@type": [
+                "File",
+                "SoftwareSourceCode",
+                "ComputationalWorkflow"
+            ],
+            "author": [
                 {
                     "@id": "https://orcid.org/0000-0002-6503-2180"
                 },
@@ -122,9 +154,19 @@
             "dateCreated": "",
             "dateModified": "2026-11-11T13:41:43Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
-            "keywords": ["nf-core", "nextflow", "gxp", "provenance", "regulatory-reporting"],
-            "license": ["MIT"],
-            "name": ["nf-core/provenancereport"],
+            "keywords": [
+                "nf-core",
+                "nextflow",
+                "gxp",
+                "provenance",
+                "regulatory-reporting"
+            ],
+            "license": [
+                "MIT"
+            ],
+            "name": [
+                "nf-core/provenancereport"
+            ],
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#nextflow"
             },
@@ -195,6 +237,11 @@
             "description": "Additional files"
         },
         {
+            "@id": "bin/",
+            "@type": "Dataset",
+            "description": "Scripts that must be callable from a pipeline process"
+        },
+        {
             "@id": "conf/",
             "@type": "Dataset",
             "description": "Configuration files"
@@ -213,6 +260,11 @@
             "@id": "modules/",
             "@type": "Dataset",
             "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
         },
         {
             "@id": "modules/nf-core/",
@@ -303,17 +355,48 @@
         {
             "@id": "https://orcid.org/0000-0002-6503-2180",
             "@type": "Person",
-            "name": "Alexander Peltzer"
+            "affiliation": "Boehringer Ingelheim",
+            "email": "apeltzer@users.noreply.github.com",
+            "name": "Alexander Peltzer",
+            "url": "https://github.com/apeltzer"
         },
         {
             "@id": "https://orcid.org/0000-0001-9584-7842",
             "@type": "Person",
-            "name": "Gregor Sturm"
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Gregor Sturm",
+            "url": "https://github.com/grst"
+        },
+        {
+            "@id": "#27646a13-4194-4cf0-be8b-10fa96ddfcd6",
+            "@type": "Person",
+            "affiliation": "Boehringer Ingelheim",
+            "name": "Julian Schwab",
+            "url": "https://github.com/julianSchwab"
+        },
+        {
+            "@id": "#a7f997ae-0c55-4db0-9cd8-44576a89270a",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "204903529+antoniasaracco@users.noreply.github.com",
+            "name": "Antonia Saracco",
+            "url": "https://github.com/antoniasaracco"
+        },
+        {
+            "@id": "#880d8548-dc20-4524-84a2-b55934c98781",
+            "@type": "Person",
+            "affiliation": "ZS",
+            "email": "155591053+delfiterradas@users.noreply.github.com",
+            "name": "Delfina Terradas",
+            "url": "https://github.com/delfiterradas"
         },
         {
             "@id": "#1ed7a4cb-2ac8-444d-9754-15f711e62f91",
             "@type": "Person",
-            "name": "Julian Schwab"
+            "affiliation": "ZS",
+            "email": "18577080+atrigila@users.noreply.github.com",
+            "name": "Anabella Trigila",
+            "url": "https://github.com/atrigila"
         }
     ]
 }

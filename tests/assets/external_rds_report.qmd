@@ -1,0 +1,101 @@
+---
+title: "External RDS report"
+format:
+  html:
+    embed-resources: true
+execute:
+  echo: false
+  message: false
+  warning: false
+params:
+  artifact_dir: "artifacts"
+  cpus: 1
+  input_dir: "."
+  input_filename: null
+  meta:
+    value: {}
+---
+
+```{r}
+rds_path <- file.path(params$input_dir, params$input_filename)
+if (!file.exists(rds_path)) {
+  stop("Input RDS file does not exist: ", rds_path)
+}
+
+object <- readRDS(rds_path)
+object_class <- paste(class(object), collapse = ", ")
+object_dim <- dim(object)
+assay_names <- character()
+first_assay <- NULL
+
+if (requireNamespace("SummarizedExperiment", quietly = TRUE) &&
+    methods::is(object, "SummarizedExperiment")) {
+  object_dim <- c(SummarizedExperiment::nrow(object), SummarizedExperiment::ncol(object))
+  assay_names <- SummarizedExperiment::assayNames(object)
+  if (length(assay_names) > 0) {
+    first_assay <- SummarizedExperiment::assay(object, assay_names[[1]])
+  }
+}
+
+summary_rows <- data.frame(
+  field = c("input_file", "class", "rows", "columns"),
+  value = c(
+    basename(rds_path),
+    object_class,
+    if (length(object_dim) >= 1) object_dim[[1]] else NA_integer_,
+    if (length(object_dim) >= 2) object_dim[[2]] else NA_integer_
+  )
+)
+
+if (methods::is(object, "SummarizedExperiment")) {
+  summary_rows <- rbind(
+    summary_rows,
+    data.frame(
+      field = c("assays", "row_data_columns", "column_data_columns"),
+      value = c(
+        paste(assay_names, collapse = ", "),
+        ncol(SummarizedExperiment::rowData(object)),
+        ncol(SummarizedExperiment::colData(object))
+      )
+    )
+  )
+}
+
+summary_rows <- summary_rows[!is.na(summary_rows$value) & nzchar(summary_rows$value), ]
+
+dir.create(params$artifact_dir, showWarnings = FALSE, recursive = TRUE)
+write.table(
+  summary_rows,
+  file = file.path(params$artifact_dir, "external_rds_summary.tsv"),
+  sep = "\t",
+  quote = FALSE,
+  row.names = FALSE
+)
+
+knitr::kable(summary_rows, caption = "RDS object summary")
+```
+
+```{r}
+if (!is.null(first_assay)) {
+  library_size <- Matrix::colSums(first_assay)
+  detected_features <- Matrix::colSums(first_assay > 0)
+
+  par(mfrow = c(1, 2), mar = c(4, 4, 2, 1))
+  hist(
+    library_size,
+    breaks = 20,
+    col = "#6BAED6",
+    border = "white",
+    main = "Library size per cell",
+    xlab = "Total counts"
+  )
+  hist(
+    detected_features,
+    breaks = 20,
+    col = "#74C476",
+    border = "white",
+    main = "Detected features per cell",
+    xlab = "Features with non-zero counts"
+  )
+}
+```

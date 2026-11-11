@@ -1,0 +1,2 @@
+id,path
+pbmc_sce,https://raw.githubusercontent.com/nf-core/test-datasets/refs/heads/scdownstream/pbmc/SRR28679757_filtered_matrix.sce.rds
