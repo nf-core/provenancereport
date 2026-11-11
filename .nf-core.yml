@@ -11,7 +11,7 @@ lint:
   multiqc_config: false
   nf_test_content:
     - tests/input_validation.nf.test
-nf_core_version: 4.2.1
+nf_core_version: 4.2.2
 repository_type: pipeline
 template:
   author: Alexander Peltzer, Gregor Sturm, Julian Schwab
